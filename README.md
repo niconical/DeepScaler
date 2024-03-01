@@ -48,7 +48,7 @@ This repository contains a prototyped version of DeepScaler described in our ASE
 +   pandas == 1.4.4
 +   torch == 1.13.1
 
- ```pip3 install -r requirements.txt```
+ ```pip3 install -r requirement.txt```
 ### 2. Setup Docker
 Docker 20.10.12
 
