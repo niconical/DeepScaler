@@ -46,7 +46,8 @@ def main(args):
     if Model is None:
         raise ValueError('Model {} is not right!'.format(net_name))
     net_pred = Model(**net_config).to(device)
-    net_graph = AdapGL.GraphLearn(net_config['num_nodes'], net_config['init_feature_num']).to(device)
+    net_graph = AdapGL.GraphLearn(
+        net_config['num_nodes'], net_config['init_feature_num']).to(device)
 
     Optimizer = getattr(sys.modules['torch.optim'], train_config['optimizer'])
     optimizer_pred = Optimizer(
@@ -54,13 +55,15 @@ def main(args):
         lr=train_config['learning_rate'],
         weight_decay=train_config['weight_decay']
     )
-    optimizer_graph = Optimizer(net_graph.parameters(), lr=train_config['learning_rate'])
+    optimizer_graph = Optimizer(
+        net_graph.parameters(), lr=train_config['learning_rate'])
 
     sc = train_config.get('lr_scheduler', None)
     if sc is None:
         scheduler_pred, scheduler_graph = None, None
     else:
-        Scheduler = getattr(sys.modules['torch.optim.lr_scheduler'], sc.pop('name'))
+        Scheduler = getattr(
+            sys.modules['torch.optim.lr_scheduler'], sc.pop('name'))
         scheduler_pred = Scheduler(optimizer_pred, **sc)
         scheduler_graph = None
 
@@ -73,18 +76,23 @@ def main(args):
     net_trainer.train(data_loaders[0], data_loaders[1])
     net_trainer.test(data_loaders[-1])
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_config_path', type=str, default='/config/train_datasets.yaml',
                         help='Config path of models')
     parser.add_argument('--train_config_path', type=str, default='/config/train_config.yaml',
                         help='Config path of Trainer')
-    parser.add_argument('--model_name', type=str, default='AdapGLA', help='Model name to train')
-    parser.add_argument('--num_epoch', type=int, default=1, help='Training times per epoch')
-    parser.add_argument('--num_iter', type=int, default=1, help='Maximum value for iteration')
+    parser.add_argument('--model_name', type=str,
+                        default='AdapGLA', help='Model name to train')
+    parser.add_argument('--num_epoch', type=int, default=1,
+                        help='Training times per epoch')
+    parser.add_argument('--num_iter', type=int, default=1,
+                        help='Maximum value for iteration')
     parser.add_argument('--model_save_path', type=str, default='/model/AdapGLA_1.pkl',
-                        help='Model save path')                 
-    parser.add_argument('--max_graph_num', type=int, default=3, help='Volume of adjacency matrix set')
+                        help='Model save path')
+    parser.add_argument('--max_graph_num', type=int, default=3,
+                        help='Volume of adjacency matrix set')
     args = parser.parse_args()
 
     main(args)

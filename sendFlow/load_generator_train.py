@@ -19,16 +19,18 @@ import time
 class TrainTicketUserTasks(TaskSet):
     def __init__(self, parent):
         super().__init__(parent)
-        
-        
-####工具
+
+
+# 工具
+
+
     def random_boolean(self) -> bool:
         return random.choice([True, False])
 
-    def random_from_list(self,l: List):
+    def random_from_list(self, l: List):
         return random.choice(l)
 
-    def random_from_weighted(self,d: dict):
+    def random_from_weighted(self, d: dict):
         """
         :param d: 带相对权重的字典，eg. {'a': 100, 'b': 50}
         :return: 返回随机选择的key
@@ -47,18 +49,16 @@ class TrainTicketUserTasks(TaskSet):
 
         return ret
 
-
     def random_str(self):
         ''.join(random.choices(string.ascii_letters, k=random.randint(4, 10)))
 
-
     def random_phone(self):
         ''.join(random.choices(string.digits, k=random.randint(8, 15)))
-    
 
     logger = logging.getLogger("query_and_preserve")
     uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
     date = time.strftime("%Y-%m-%d", time.localtime())
+
     def random_boolean(self) -> bool:
         return random.choice([True, False])
     ##   1     ######################################################################################################################
@@ -66,20 +66,21 @@ class TrainTicketUserTasks(TaskSet):
     # def index(self):
     #     self.client.get("/")
     ##   2     ######################################################################################################################
-    #@task(1)
+    # @task(1)
+
     def login(self):
-        username="fdse_microservice"
-        password="111111"
+        username = "fdse_microservice"
+        password = "111111"
         url = f"/api/v1/users/login"
-        
+
         cookies = {
             'JSESSIONID': '9ED5635A2A892A4BA31E7E98533A279D',
             'YsbCaptcha': '025080CF8BA94594B09E283F17815444',
         }
-            # 'Origin': url,
-            # 'Referer': f"/client_login.html",
-            # 'Proxy-Connection': 'keep-alive',
-            # 'Connection': 'close'
+        # 'Origin': url,
+        # 'Referer': f"/client_login.html",
+        # 'Proxy-Connection': 'keep-alive',
+        # 'Connection': 'close'
         headers = {
             'Accept': 'application/json, text/javascript, */*; q=0.01',
             'X-Requested-With': 'XMLHttpRequest',
@@ -90,8 +91,8 @@ class TrainTicketUserTasks(TaskSet):
 
         data = '{"username":"' + username + '","password":"' + password + '"}'
         r = self.client.post(url=url, headers=headers,
-                        cookies=cookies, data=data, verify=False)
-        #print(r.status_code)
+                             cookies=cookies, data=data, verify=False)
+        # print(r.status_code)
         if r.status_code == 200:
             data = r.json().get("data")
             uid = data.get("userId")
@@ -109,13 +110,13 @@ class TrainTicketUserTasks(TaskSet):
             "Content-Type": "application/json"
         }
         headers["Authorization"] = "Bearer " + token
-        
+
         start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         self.query_admin_basic_config(headers=headers)
         end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         print(f"start:{start_time} end:{end_time}")
- 
-      ##############5     ######################################################################################################################               
+
+      ############## 5     ######################################################################################################################
     @task(1)
     def query_advanced_ticket_use(self):
         _, token = self.login()
@@ -126,22 +127,22 @@ class TrainTicketUserTasks(TaskSet):
         }
         headers["Authorization"] = "Bearer " + token
         place_pairs = [("Shang Hai", "Su Zhou"),
-                    ("Su Zhou", "Shang Hai"),
-                    ("Nan Jing", "Shang Hai")]
+                       ("Su Zhou", "Shang Hai"),
+                       ("Nan Jing", "Shang Hai")]
         type = "quickest"
         url = f"/api/v1/travelplanservice/travelPlan/" + type
         place_pair = random.choice(place_pairs)
-        
+
         payload = {
             "departureTime": time.strftime("%Y-%m-%d", time.localtime()),
             "startingPlace": place_pair[0],
             "endPlace": place_pair[1],
         }
-        
+
         self.client.post(url, headers=headers, json=payload)
-    
-      ###################6     ######################################################################################################################
-    @task(1)        
+
+      ################### 6     ######################################################################################################################
+    @task(1)
     def query_and_preserve_use(self):
         _, token = self.login()
         headers = {
@@ -167,13 +168,15 @@ class TrainTicketUserTasks(TaskSet):
             start = "Shang Hai"
             end = "Su Zhou"
             high_speed_place_pair = (start, end)
-            trip_ids = self.query_high_speed_ticket(place_pair=high_speed_place_pair, headers=headers, time=time.strftime("%Y-%m-%d", time.localtime()))
+            trip_ids = self.query_high_speed_ticket(
+                place_pair=high_speed_place_pair, headers=headers, time=time.strftime("%Y-%m-%d", time.localtime()))
             PRESERVE_URL = f"/api/v1/preserveservice/preserve"
         else:
             start = "Shang Hai"
             end = "Nan Jing"
             other_place_pair = (start, end)
-            trip_ids = self.query_normal_ticket(place_pair=other_place_pair, headers=headers, time=time.strftime("%Y-%m-%d", time.localtime()))
+            trip_ids = self.query_normal_ticket(
+                place_pair=other_place_pair, headers=headers, time=time.strftime("%Y-%m-%d", time.localtime()))
             PRESERVE_URL = f"/api/v1/preserveotherservice/preserveOther"
 
         _ = self.query_assurances(headers=headers)
@@ -225,20 +228,21 @@ class TrainTicketUserTasks(TaskSet):
 
         print("payload:" + str(base_preserve_payload))
 
-        print(f"choices: preserve_high: {high_speed} need_food:{need_food}  need_consign: {need_consign}  need_assurance:{need_assurance}")
+        print(
+            f"choices: preserve_high: {high_speed} need_food:{need_food}  need_consign: {need_consign}  need_assurance:{need_assurance}")
 
         res = self.client.post(url=PRESERVE_URL,
-                            headers=headers,
-                            json=base_preserve_payload)
+                               headers=headers,
+                               json=base_preserve_payload)
 
         print(res.json())
         if res.json()["data"] != "Success":
             raise Exception(res.json() + " not success")
         print()
-        
-    #   7     ######################################################################################################################    
+
+    #   7     ######################################################################################################################
     @task(1)
-    def query_admin_basic_price_use(self):   
+    def query_admin_basic_price_use(self):
         _, token = self.login()
         headers = {
             "Cookie": "JSESSIONID=823B2652E3F5B64A1C94C924A05D80AF; YsbCaptcha=2E037F4AB09D49FA9EE3BE4E737EAFD2",
@@ -246,13 +250,13 @@ class TrainTicketUserTasks(TaskSet):
             "Content-Type": "application/json"
         }
         headers["Authorization"] = "Bearer " + token
-        
+
         start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         self.query_admin_basic_price(headers=headers)
         end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         print(f"start:{start_time} end:{end_time}")
 
-    ##   8     ######################################################################################################################    
+    ##   8     ######################################################################################################################
     @task(1)
     def query_and_cancel_use(self):
         _, token = self.login()
@@ -262,12 +266,13 @@ class TrainTicketUserTasks(TaskSet):
             "Content-Type": "application/json"
         }
         headers["Authorization"] = "Bearer " + token
-        #uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
+        # uuid = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
 
-        self.query_one_and_cancel(headers=headers,uuid=self.uuid,)               
-    # #   9     ######################################################################################################################    
+        self.query_one_and_cancel(headers=headers, uuid=self.uuid,)
+    # #   9     ######################################################################################################################
+
     @task(1)
-    def query_and_collect_ticket_use(self): 
+    def query_and_collect_ticket_use(self):
         _, token = self.login()
         headers = {
             "Cookie": "JSESSIONID=823B2652E3F5B64A1C94C924A05D80AF; YsbCaptcha=2E037F4AB09D49FA9EE3BE4E737EAFD2",
@@ -275,10 +280,10 @@ class TrainTicketUserTasks(TaskSet):
             "Content-Type": "application/json"
         }
         headers["Authorization"] = "Bearer " + token
-        self.query_and_collect_ticket(headers=headers)      
+        self.query_and_collect_ticket(headers=headers)
 
-    #   10     ######################################################################################################################    
-    @task(1)    
+    #   10     ######################################################################################################################
+    @task(1)
     def query_and_enter_station_use(self):
         _, token = self.login()
         headers = {
@@ -289,7 +294,7 @@ class TrainTicketUserTasks(TaskSet):
         headers["Authorization"] = "Bearer " + token
         self.query_and_enter_station(headers=headers)
 
-    #   11     ######################################################################################################################    
+    #   11     ######################################################################################################################
     @task(1)
     def query_and_put_consign_use(self):
         _, token = self.login()
@@ -310,7 +315,8 @@ class TrainTicketUserTasks(TaskSet):
         end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
         print(f"start:{start_time} end:{end_time}")
-    # ##   12     ######################################################################################################################    
+    # ##   12     ######################################################################################################################
+
     @task(1)
     def query_and_rebook_use(self):
         _, token = self.login()
@@ -320,44 +326,46 @@ class TrainTicketUserTasks(TaskSet):
             "Content-Type": "application/json"
         }
         headers["Authorization"] = "Bearer " + token
-        
+
         start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         self.query_and_rebook(headers=headers)
 
         end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-        print(f"start:{start_time} end:{end_time}")    
-        
-    ##   13     ######################################################################################################################    
+        print(f"start:{start_time} end:{end_time}")
+
+    ##   13     ######################################################################################################################
     @task(1)
-    def query_food_use(self):       
+    def query_food_use(self):
         _, token = self.login()
         headers = {
             "Cookie": "JSESSIONID=823B2652E3F5B64A1C94C924A05D80AF; YsbCaptcha=2E037F4AB09D49FA9EE3BE4E737EAFD2",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTYyNzE5OTA0NCwiZXhwIjoxNjI3MjAyNjQ0fQ.3IIwwz7AwqHtOFDeXfih25i6_7nQBPL_K7BFxuyFiKQ",
             "Content-Type": "application/json"
         }
-        headers["Authorization"] = "Bearer " + token       
+        headers["Authorization"] = "Bearer " + token
         start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
         self.query_food(headers=headers)
         end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
         print(f"start:{start_time} end:{end_time}")
-    #   14     ######################################################################################################################    
+    #   14     ######################################################################################################################
+
     @task(1)
-    def query_order_and_pay_use(self):       
+    def query_order_and_pay_use(self):
         _, token = self.login()
         headers = {
             "Cookie": "JSESSIONID=823B2652E3F5B64A1C94C924A05D80AF; YsbCaptcha=2E037F4AB09D49FA9EE3BE4E737EAFD2",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTYyNzE5OTA0NCwiZXhwIjoxNjI3MjAyNjQ0fQ.3IIwwz7AwqHtOFDeXfih25i6_7nQBPL_K7BFxuyFiKQ",
             "Content-Type": "application/json"
         }
-        headers["Authorization"] = "Bearer " + token              
+        headers["Authorization"] = "Bearer " + token
         start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
         pairs = self.query_orders(headers=headers, types=tuple([0, 1]))
-        pairs2 = self.query_orders(headers=headers, types=tuple([0, 1]), query_other=True)
+        pairs2 = self.query_orders(
+            headers=headers, types=tuple([0, 1]), query_other=True)
 
         pairs = pairs + pairs2
 
@@ -370,10 +378,11 @@ class TrainTicketUserTasks(TaskSet):
 
         end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-        print(f"start:{start_time} end:{end_time}")        
-    ##   15     ######################################################################################################################    
+        print(f"start:{start_time} end:{end_time}")
+    ##   15     ######################################################################################################################
+
     @task(1)
-    def query_route_use(self):        
+    def query_route_use(self):
         _, token = self.login()
         headers = {
             "Cookie": "JSESSIONID=823B2652E3F5B64A1C94C924A05D80AF; YsbCaptcha=2E037F4AB09D49FA9EE3BE4E737EAFD2",
@@ -381,8 +390,9 @@ class TrainTicketUserTasks(TaskSet):
             "Content-Type": "application/json"
         }
         headers["Authorization"] = "Bearer " + token
-        self.query_route(headers=headers)     
-    # ##   16     ######################################################################################################################    
+        self.query_route(headers=headers)
+    # ##   16     ######################################################################################################################
+
     @task(1)
     def query_travel_left_parallel_use(self):
         _, token = self.login()
@@ -400,7 +410,7 @@ class TrainTicketUserTasks(TaskSet):
 
         print(f"start:{start_time} end:{end_time}")
 
-    ##   17     ######################################################################################################################    
+    ##   17     ######################################################################################################################
     @task(1)
     def query_travel_left_use(self):
         _, token = self.login()
@@ -413,17 +423,12 @@ class TrainTicketUserTasks(TaskSet):
         start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         print(f"start:{start_time}")
 
-
         self.query_travel_left(headers=headers)
         end_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
         print(f"start:{start_time} end:{end_time}")
 
-
-
-
-                       
-    def query_high_speed_ticket(self,place_pair: tuple = ("Shang Hai", "Su Zhou"), headers: dict = {},
+    def query_high_speed_ticket(self, place_pair: tuple = ("Shang Hai", "Su Zhou"), headers: dict = {},
                                 time: str = "2021-07-15") -> List[str]:
         """
         返回TripId 列表
@@ -434,8 +439,8 @@ class TrainTicketUserTasks(TaskSet):
 
         url = f"/api/v1/travelservice/trips/left"
         place_pairs = [("Shang Hai", "Su Zhou"),
-                    ("Su Zhou", "Shang Hai"),
-                    ("Nan Jing", "Shang Hai")]
+                       ("Su Zhou", "Shang Hai"),
+                       ("Nan Jing", "Shang Hai")]
 
         payload = {
             "departureTime": time,
@@ -444,26 +449,28 @@ class TrainTicketUserTasks(TaskSet):
         }
 
         response = self.client.post(url=url,
-                                headers=headers,
-                                json=payload)
+                                    headers=headers,
+                                    json=payload)
 
         if response.status_code is not 200 or response.json().get("data") is None:
-            self.logger.warning(f"request for {url} failed. response data is {response.text}")
+            self.logger.warning(
+                f"request for {url} failed. response data is {response.text}")
             return None
 
         data = response.json().get("data")  # type: dict
 
         trip_ids = []
         for d in data:
-            trip_id = d.get("tripId").get("type") + d.get("tripId").get("number")
+            trip_id = d.get("tripId").get("type") + \
+                d.get("tripId").get("number")
             trip_ids.append(trip_id)
         return trip_ids
 
-    def query_normal_ticket(self,place_pair: tuple = ("Nan Jing", "Shang Hai"), headers: dict = {},
+    def query_normal_ticket(self, place_pair: tuple = ("Nan Jing", "Shang Hai"), headers: dict = {},
                             time: str = "2021-07-15") -> List[str]:
         url = f"/api/v1/travel2service/trips/left"
         place_pairs = [("Shang Hai", "Nan Jing"),
-                    ("Nan Jing", "Shang Hai")]
+                       ("Nan Jing", "Shang Hai")]
 
         payload = {
             "departureTime": time,
@@ -472,37 +479,41 @@ class TrainTicketUserTasks(TaskSet):
         }
 
         response = self.client.post(url=url,
-                                headers=headers,
-                                json=payload)
+                                    headers=headers,
+                                    json=payload)
         if response.status_code is not 200 or response.json().get("data") is None:
-            self.logger.warning(f"request for {url} failed. response data is {response.json()}")
+            self.logger.warning(
+                f"request for {url} failed. response data is {response.json()}")
             return None
 
         data = response.json().get("data")  # type: dict
 
         trip_ids = []
         for d in data:
-            trip_id = d.get("tripId").get("type") + d.get("tripId").get("number")
+            trip_id = d.get("tripId").get("type") + \
+                d.get("tripId").get("number")
             trip_ids.append(trip_id)
-        return trip_ids        
+        return trip_ids
 
-    def query_assurances(self,headers: dict = {}):
+    def query_assurances(self, headers: dict = {}):
         url = f"/api/v1/assuranceservice/assurances/types"
         response = self.client.get(url=url, headers=headers)
         if response.status_code is not 200 or response.json().get("data") is None:
-            self.self.logger.warning(f"query assurance failed, response data is {response.json()}")
+            self.self.logger.warning(
+                f"query assurance failed, response data is {response.json()}")
             return None
         data = response.json().get("data")
         # assurance只有一种
 
         return [{"assurance": "1"}]
-    
-    def query_food(self,place_pair: tuple = ("Shang Hai", "Su Zhou"), train_num: str = "D1345", headers: dict = {}):
+
+    def query_food(self, place_pair: tuple = ("Shang Hai", "Su Zhou"), train_num: str = "D1345", headers: dict = {}):
         url = f"/api/v1/foodservice/foods/2021-07-14/{place_pair[0]}/{place_pair[1]}/{train_num}"
 
         response = self.client.get(url=url, headers=headers)
         if response.status_code is not 200 or response.json().get("data") is None:
-            self.logger.warning(f"query food failed, response data is {response}")
+            self.logger.warning(
+                f"query food failed, response data is {response}")
             return None
         data = response.json().get("data")
 
@@ -515,8 +526,7 @@ class TrainTicketUserTasks(TaskSet):
             "storeName": "Roman Holiday"
         }]
 
-
-    def query_contacts(self,headers: dict = {}) -> List[str]:
+    def query_contacts(self, headers: dict = {}) -> List[str]:
         """
         返回座位id列表
         :param headers:
@@ -525,7 +535,8 @@ class TrainTicketUserTasks(TaskSet):
         url = f"/api/v1/contactservice/contacts/account/{self.uuid}"
         response = self.client.get(url=url, headers=headers)
         if response.status_code is not 200 or response.json().get("data") is None:
-            self.logger.warning(f"query contacts failed, response data is {response.json()}")
+            self.logger.warning(
+                f"query contacts failed, response data is {response.json()}")
             return None
 
         data = response.json().get("data")
@@ -535,25 +546,22 @@ class TrainTicketUserTasks(TaskSet):
         ids = [d.get("id") for d in data if d.get("id") is not None]
         # pprint(ids)
         return ids
- 
-    def query_admin_basic_config(self,headers: dict = {}):
+
+    def query_admin_basic_config(self, headers: dict = {}):
         url = f"/api/v1/adminbasicservice/adminbasic/configs"
-        response = self.client.get(url=url,headers=headers)
+        response = self.client.get(url=url, headers=headers)
         if response.status_code == 200:
             print(f"config success")
             return response
         else:
             print(f"config failed")
-            return None   
-
-
+            return None
 
     def admin_login(self):
         return self.login()
 
-
-    def query_high_speed_ticket_parallel(self,place_pair: tuple = ("Shang Hai", "Su Zhou"), headers: dict = {},
-                                        time: str = "2021-07-15") -> List[str]:
+    def query_high_speed_ticket_parallel(self, place_pair: tuple = ("Shang Hai", "Su Zhou"), headers: dict = {},
+                                         time: str = "2021-07-15") -> List[str]:
         """
         返回TripId 列表
         :param place_pair: 使用的开始结束组对
@@ -563,8 +571,8 @@ class TrainTicketUserTasks(TaskSet):
 
         url = f"/api/v1/travelservice/trips/left_parallel"
         place_pairs = [("Shang Hai", "Su Zhou"),
-                    ("Su Zhou", "Shang Hai"),
-                    ("Nan Jing", "Shang Hai")]
+                       ("Su Zhou", "Shang Hai"),
+                       ("Nan Jing", "Shang Hai")]
 
         payload = {
             "departureTime": time,
@@ -573,24 +581,25 @@ class TrainTicketUserTasks(TaskSet):
         }
 
         response = self.client.post(url=url,
-                                headers=headers,
-                                json=payload)
+                                    headers=headers,
+                                    json=payload)
         print(response.status_code)
         if response.status_code is not 200 or response.json().get("data") is None:
-            self.logger.warning(f"request for {url} failed. response data is {response.text}")
+            self.logger.warning(
+                f"request for {url} failed. response data is {response.text}")
             return None
 
         data = response.json().get("data")  # type: dict
 
         trip_ids = []
         for d in data:
-            trip_id = d.get("tripId").get("type") + d.get("tripId").get("number")
+            trip_id = d.get("tripId").get("type") + \
+                d.get("tripId").get("number")
             trip_ids.append(trip_id)
         return trip_ids
 
-
-    def query_advanced_ticket(self,place_pair: tuple = ("Nan Jing", "Shang Hai"), headers: dict = {}, time: str = "2021-07-15",
-                            type: str = "cheapest") -> List[str]:
+    def query_advanced_ticket(self, place_pair: tuple = ("Nan Jing", "Shang Hai"), headers: dict = {}, time: str = "2021-07-15",
+                              type: str = "cheapest") -> List[str]:
         url = f"/api/v1/travelplanservice/travelPlan/" + type
         print(url)
 
@@ -603,11 +612,12 @@ class TrainTicketUserTasks(TaskSet):
         # print(payload)
 
         response = self.client.post(url=url,
-                                headers=headers,
-                                json=payload)
+                                    headers=headers,
+                                    json=payload)
         # print(response.text)
         if response.status_code is not 200 or response.json().get("data") is None:
-            self.logger.warning(f"request for {url} failed. response data is {response.json()}")
+            self.logger.warning(
+                f"request for {url} failed. response data is {response.json()}")
             return None
 
         data = response.json().get("data")
@@ -618,8 +628,7 @@ class TrainTicketUserTasks(TaskSet):
             trip_ids.append(trip_id)
         return trip_ids
 
-
-    def query_orders(self,headers: dict = {}, types: tuple = tuple([0]), query_other: bool = False) -> List[tuple]:
+    def query_orders(self, headers: dict = {}, types: tuple = tuple([0]), query_other: bool = False) -> List[tuple]:
         """
         返回(orderId, tripId) triple list for inside_pay_service
         :param headers:
@@ -638,7 +647,8 @@ class TrainTicketUserTasks(TaskSet):
 
         response = self.client.post(url=url, headers=headers, json=payload)
         if response.status_code is not 200 or response.json().get("data") is None:
-            self.logger.warning(f"query orders failed, response data is {response.text}")
+            self.logger.warning(
+                f"query orders failed, response data is {response.text}")
             return None
 
         data = response.json().get("data")
@@ -657,8 +667,7 @@ class TrainTicketUserTasks(TaskSet):
 
         return pairs
 
-
-    def query_orders_all_info(self,headers: dict = {}, query_other: bool = False) -> List[tuple]:
+    def query_orders_all_info(self, headers: dict = {}, query_other: bool = False) -> List[tuple]:
         """
         返回(orderId, tripId) triple list for consign service
         :param headers:
@@ -676,7 +685,8 @@ class TrainTicketUserTasks(TaskSet):
 
         response = self.client.post(url=url, headers=headers, json=payload)
         if response.status_code is not 200 or response.json().get("data") is None:
-            self.logger.warning(f"query orders failed, response data is {response.text}")
+            self.logger.warning(
+                f"query orders failed, response data is {response.text}")
             return None
 
         data = response.json().get("data")
@@ -684,7 +694,8 @@ class TrainTicketUserTasks(TaskSet):
         for d in data:
             result = {}
             result["accountId"] = d.get("accountId")
-            result["targetDate"] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+            result["targetDate"] = time.strftime(
+                '%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
             result["orderId"] = d.get("id")
             result["from"] = d.get("from")
             result["to"] = d.get("to")
@@ -693,8 +704,7 @@ class TrainTicketUserTasks(TaskSet):
 
         return pairs
 
-
-    def put_consign(self,result, headers: dict = {}):
+    def put_consign(self, result, headers: dict = {}):
         url = f"/api/v1/consignservice/consigns"
         consignload = {
             "accountId": result["accountId"],
@@ -710,7 +720,7 @@ class TrainTicketUserTasks(TaskSet):
             "isWithin": False
         }
         response = self.client.put(url=url, headers=headers,
-                                json=consignload)
+                                   json=consignload)
 
         order_id = result["orderId"]
         if response.status_code == 200 or response.status_code == 201:
@@ -721,8 +731,7 @@ class TrainTicketUserTasks(TaskSet):
 
         return order_id
 
-
-    def query_route(self,routeId: str = '92708982-77af-4318-be25-57ccb0ff69ad', headers: dict = {}):
+    def query_route(self, routeId: str = '92708982-77af-4318-be25-57ccb0ff69ad', headers: dict = {}):
         url = f"/api/v1/routeservice/routes/{routeId}"
 
         res = self.client.get(url=url, headers=headers)
@@ -734,8 +743,7 @@ class TrainTicketUserTasks(TaskSet):
 
         return
 
-
-    def pay_one_order(self,order_id, trip_id, headers: dict = {}):
+    def pay_one_order(self, order_id, trip_id, headers: dict = {}):
         url = f"/api/v1/inside_pay_service/inside_payment"
         payload = {
             "orderId": order_id,
@@ -743,7 +751,7 @@ class TrainTicketUserTasks(TaskSet):
         }
 
         response = self.client.post(url=url, headers=headers,
-                                json=payload)
+                                    json=payload)
 
         if response.status_code == 200:
             print(f"{order_id} pay success")
@@ -753,8 +761,7 @@ class TrainTicketUserTasks(TaskSet):
 
         return order_id
 
-
-    def cancel_one_order(self,order_id, uuid, headers: dict = {}):
+    def cancel_one_order(self, order_id, uuid, headers: dict = {}):
         print("orderid  ssj")
         print(order_id)
         print("uuid")
@@ -762,7 +769,7 @@ class TrainTicketUserTasks(TaskSet):
         url = f"/api/v1/cancelservice/cancel/{order_id}/{uuid}"
         print(url)
         response = self.client.get(url=url,
-                                headers=headers)
+                                   headers=headers)
 
         if response.status_code == 200:
             print(f"{order_id} cancel success")
@@ -771,11 +778,10 @@ class TrainTicketUserTasks(TaskSet):
 
         return order_id
 
-
-    def collect_one_order(self,order_id, headers: dict = {}):
+    def collect_one_order(self, order_id, headers: dict = {}):
         url = f"/api/v1/executeservice/execute/collected/{order_id}"
         response = self.client.get(url=url,
-                                headers=headers)
+                                   headers=headers)
         if response.status_code == 200:
             print(f"{order_id} collect success")
         else:
@@ -783,11 +789,10 @@ class TrainTicketUserTasks(TaskSet):
 
         return order_id
 
-
-    def enter_station(self,order_id, headers: dict = {}):
+    def enter_station(self, order_id, headers: dict = {}):
         url = f"/api/v1/executeservice/execute/execute/{order_id}"
         response = self.client.get(url=url,
-                                headers=headers)
+                                   headers=headers)
         if response.status_code == 200:
             print(f"{order_id} enter station success")
         else:
@@ -795,8 +800,7 @@ class TrainTicketUserTasks(TaskSet):
 
         return order_id
 
-
-    def query_cheapest(self,date="2021-12-31", headers: dict = {}):
+    def query_cheapest(self, date="2021-12-31", headers: dict = {}):
         url = f"/api/v1/travelplanservice/travelPlan/cheapest"
 
         payload = {
@@ -811,8 +815,7 @@ class TrainTicketUserTasks(TaskSet):
         else:
             print("query cheapest failed")
 
-
-    def query_min_station(self,date="2021-12-31", headers: dict = {}):
+    def query_min_station(self, date="2021-12-31", headers: dict = {}):
         url = f"/api/v1/travelplanservice/travelPlan/minStation"
 
         payload = {
@@ -827,8 +830,7 @@ class TrainTicketUserTasks(TaskSet):
         else:
             print("query min station failed")
 
-
-    def query_quickest(self,date="2021-12-31", headers: dict = {}):
+    def query_quickest(self, date="2021-12-31", headers: dict = {}):
         url = f"/api/v1/travelplanservice/travelPlan/quickest"
 
         payload = {
@@ -843,11 +845,10 @@ class TrainTicketUserTasks(TaskSet):
         else:
             print("query quickest failed")
 
-
-    def query_admin_basic_price(self,headers: dict = {}):
+    def query_admin_basic_price(self, headers: dict = {}):
         url = f"/api/v1/adminbasicservice/adminbasic/prices"
         response = self.client.get(url=url,
-                                headers=headers)
+                                   headers=headers)
         if response.status_code == 200:
             print(f"price success")
             return response
@@ -855,8 +856,7 @@ class TrainTicketUserTasks(TaskSet):
             print(f"price failed")
             return None
 
-
-    def rebook_ticket(self,old_order_id, old_trip_id, new_trip_id, new_date, new_seat_type, headers):
+    def rebook_ticket(self, old_order_id, old_trip_id, new_trip_id, new_date, new_seat_type, headers):
         url = f"/api/v1/rebookservice/rebook"
 
         payload = {
@@ -874,17 +874,17 @@ class TrainTicketUserTasks(TaskSet):
             print(f"Request Failed: status code: {r.status_code}")
             print(r.text)
 
-
-    def query_admin_travel(self,headers):
+    def query_admin_travel(self, headers):
         url = f"/api/v1/admintravelservice/admintravel"
 
         r = self.client.get(url=url, headers=headers)
         if r.status_code == 200 and r.json()["status"] == 1:
             print("success to query admin travel")
         else:
-            print(f"faild to query admin travel with status_code: {r.status_code}")
+            print(
+                f"faild to query admin travel with status_code: {r.status_code}")
 
-    def query_one_and_cancel(self,headers, uuid="4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"):
+    def query_one_and_cancel(self, headers, uuid="4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"):
         """
         查询order并取消order
         :param uuid:
@@ -892,7 +892,8 @@ class TrainTicketUserTasks(TaskSet):
         :return:
         """
         pairs = self.query_orders(headers=headers, types=tuple([0]))
-        pairs2 = self.query_orders(headers=headers, types=tuple([0]), query_other=True)
+        pairs2 = self.query_orders(
+            headers=headers, types=tuple([0]), query_other=True)
 
         if not pairs and not pairs2:
             return
@@ -903,16 +904,18 @@ class TrainTicketUserTasks(TaskSet):
         pair = self.random_from_list(pairs)
         print(pair[0])
         print("...............................")
-        order_id =self.cancel_one_order(order_id=pair[0], uuid=self.uuid, headers=headers)
+        order_id = self.cancel_one_order(
+            order_id=pair[0], uuid=self.uuid, headers=headers)
         if not order_id:
             return
 
         print(f"{order_id} queried and canceled")
 
-    def query_and_collect_ticket(self,headers):
+    def query_and_collect_ticket(self, headers):
 
         pairs = self.query_orders(headers=headers, types=tuple([0]))
-        pairs2 = self.query_orders(headers=headers, types=tuple([0]), query_other=True)
+        pairs2 = self.query_orders(
+            headers=headers, types=tuple([0]), query_other=True)
 
         if not pairs and not pairs2:
             return
@@ -928,9 +931,10 @@ class TrainTicketUserTasks(TaskSet):
 
         print(f"{order_id} queried and collected")
 
-    def query_and_enter_station(self,headers):
+    def query_and_enter_station(self, headers):
         pairs = self.query_orders(headers=headers, types=tuple([0]))
-        pairs2 = self.query_orders(headers=headers, types=tuple([0]), query_other=True)
+        pairs2 = self.query_orders(
+            headers=headers, types=tuple([0]), query_other=True)
 
         if not pairs and not pairs2:
             return
@@ -946,7 +950,7 @@ class TrainTicketUserTasks(TaskSet):
 
         print(f"{order_id} queried and entered station")
 
-    def query_one_and_put_consign(self,headers, pairs):
+    def query_one_and_put_consign(self, headers, pairs):
         """
         查询order并put consign
         :param uuid:
@@ -962,11 +966,12 @@ class TrainTicketUserTasks(TaskSet):
 
         print(f"{order_id} queried and put consign")
 
-    def query_and_rebook(self,headers):
+    def query_and_rebook(self, headers):
 
         pairs = self.query_orders(headers=headers, types=tuple([0]))
         print(pairs)
-        pairs2 = self.query_orders(headers=headers, types=tuple([1]), query_other=True)
+        pairs2 = self.query_orders(
+            headers=headers, types=tuple([1]), query_other=True)
 
         if not pairs and not pairs2:
             return
@@ -979,11 +984,12 @@ class TrainTicketUserTasks(TaskSet):
         new_date = time.strftime("%Y-%m-%d", time.localtime())
         new_seat_type = "3"
 
-        for pair in pairs: 
-            #print(pair)
-            self.rebook_ticket(old_order_id=pair[0], old_trip_id=pair[1], new_trip_id=new_trip_id, new_date=new_date, new_seat_type=new_seat_type, headers=headers)
+        for pair in pairs:
+            # print(pair)
+            self.rebook_ticket(old_order_id=pair[0], old_trip_id=pair[1], new_trip_id=new_trip_id,
+                               new_date=new_date, new_seat_type=new_seat_type, headers=headers)
 
-    def query_order_and_pay(self,headers, pairs):
+    def query_order_and_pay(self, headers, pairs):
         """
         查询Order并付款未付款Order
         :return:
@@ -998,7 +1004,7 @@ class TrainTicketUserTasks(TaskSet):
 
         print(f"{order_id} queried and paid")
 
-    def query_travel_left_parallel(self,headers):
+    def query_travel_left_parallel(self, headers):
         """
         1. 查票（随机高铁或普通）
         2. 查保险、Food、Contacts
@@ -1014,9 +1020,10 @@ class TrainTicketUserTasks(TaskSet):
         start = "Su Zhou"
         end = "Shang Hai"
         high_speed_place_pair = (start, end)
-        trip_ids = self.query_high_speed_ticket_parallel(place_pair=high_speed_place_pair, headers=headers, time=time.strftime("%Y-%m-%d", time.localtime()))
+        trip_ids = self.query_high_speed_ticket_parallel(
+            place_pair=high_speed_place_pair, headers=headers, time=time.strftime("%Y-%m-%d", time.localtime()))
 
-    def query_travel_left(self,headers):
+    def query_travel_left(self, headers):
         """
         1. 查票（随机高铁或普通）
         2. 查保险、Food、Contacts
@@ -1034,21 +1041,14 @@ class TrainTicketUserTasks(TaskSet):
             start = "Shang Hai"
             end = "Su Zhou"
             high_speed_place_pair = (start, end)
-            trip_ids = self.query_high_speed_ticket(place_pair=high_speed_place_pair, headers=headers, time=time.strftime("%Y-%m-%d", time.localtime()))
+            trip_ids = self.query_high_speed_ticket(
+                place_pair=high_speed_place_pair, headers=headers, time=time.strftime("%Y-%m-%d", time.localtime()))
         else:
             start = "Shang Hai"
             end = "Nan Jing"
             other_place_pair = (start, end)
-            trip_ids = self.query_normal_ticket(place_pair=other_place_pair, headers=headers, time=time.strftime("%Y-%m-%d", time.localtime()))
-
-
-
-
-
-
-
-
-
+            trip_ids = self.query_normal_ticket(
+                place_pair=other_place_pair, headers=headers, time=time.strftime("%Y-%m-%d", time.localtime()))
 
 
 class WebsiteUser(HttpUser):
@@ -1060,9 +1060,10 @@ class WebsiteUser(HttpUser):
     host = "http://localhost:30001"
     wait_time = constant(1)
     tasks = [TrainTicketUserTasks]
-    #tasks = [BoutiqueUserTasks]
+    # tasks = [BoutiqueUserTasks]
     # tasks = [SockShopUserTasks]
-    
+
+
 class StagesShape(LoadTestShape):
     """
     A simply load test shape class that has different user and spawn_rate at
@@ -1083,22 +1084,23 @@ class StagesShape(LoadTestShape):
         super().__init__()
         lines = []
         with open("/ssj/ssj/train-ticket/train-ticket-auto-query2/sendflow/random-100max.req", 'r') as f:
-        #with open("/ssj/ssj/train-ticket/train-ticket-auto-query2/sendflow/normalFlow.req", 'r') as f:
+            # with open("/ssj/ssj/train-ticket/train-ticket-auto-query2/sendflow/normalFlow.req", 'r') as f:
             lines = list(map(int, f.readlines()))
-            lines = [x for i,x in enumerate(lines) if i%1==0]#在原来的基础上扩大了4倍
-            self.lines = ([1]*5+lines+[1]*5)#又给了几个波谷
-            #self.lines = lines#又给了几个波谷
-    
+            lines = [x for i, x in enumerate(
+                lines) if i % 1 == 0]  # 在原来的基础上扩大了4倍
+            self.lines = ([1]*5+lines+[1]*5)  # 又给了几个波谷
+            # self.lines = lines#又给了几个波谷
+
     def tick(self):
         run_time = self.get_run_time()
         # for i in range(1, 100):
         #     return (i,1)
-        #while True:
-        for _ in range(10):#
+        # while True:
+        for _ in range(10):
             for i, v in enumerate(self.lines):
-                #if run_time < (i+1)*10:#间隔为10s
-                if run_time < (i+1)*5:#间隔为5s
-                    tick_data = (v, 100)                
+                # if run_time < (i+1)*10:#间隔为10s
+                if run_time < (i+1)*5:  # 间隔为5s
+                    tick_data = (v, 100)
             # user_count -- Total user count
             # spawn_rate -- Number of users to start/stop per second when changing number of users
                     # tick_data = (26, 100)
@@ -1108,7 +1110,7 @@ class StagesShape(LoadTestShape):
         #         tick_data = (stage["users"], stage["spawn_rate"])
         #         return tick_data
 
- 
+
 # if __name__ == '__main__':
 #     lines = []
 #     with open("/home/meng/random-100max.req", 'r') as f:

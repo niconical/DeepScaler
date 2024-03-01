@@ -24,7 +24,8 @@ class TPDataset(Dataset):
     def __len__(self):
         key = self.keys[-1]
         return self.data[key].shape[0]
-    
+
+
 class TPDataset2(Dataset):
     def __init__(self, data_path, keys=('x')):
         self.data_path = data_path
@@ -36,7 +37,6 @@ class TPDataset2(Dataset):
     def fit(self, scaler):
         key = self.keys[0]
         self.data[key] = scaler.transform(self.data[key])
-
 
     def __getitem__(self, index: int):
         ret = [self.data[key][index] for key in self.keys]

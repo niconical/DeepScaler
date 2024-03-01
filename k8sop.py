@@ -15,7 +15,7 @@ class K8sOp:
         #     # pod version -> not use .kube/config
         #     k8s.config.load_incluster_config()
         self.k8sapi = k8s.client.CoreV1Api()
-        #self.k8sexapi = k8s.client.ExtensionsV1beta1Api()
+        # self.k8sexapi = k8s.client.ExtensionsV1beta1Api()
         self.k8sexapi = k8s.client.AppsV1Api()
 
     def get_deployment_instance(self, svc_name, namespace):
@@ -42,8 +42,9 @@ class K8sOp:
             print("Error: No this deployment!!")
             return
         self.scale_deployment_by_instance(ins, replicas)
-    
+
     def get_deployment_replicas(self, svc_name, namespace):
         # res = self.k8sexapi.read_namespaced_replica_set(svc_name, namespace)
-        res = self.k8sexapi.read_namespaced_deployment_scale(svc_name, namespace)
+        res = self.k8sexapi.read_namespaced_deployment_scale(
+            svc_name, namespace)
         return res.spec.replicas
