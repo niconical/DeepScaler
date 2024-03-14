@@ -105,7 +105,7 @@ You can refer to this [webpage](https://blog.techbridge.cc/2019/05/29/how-to-use
 
 ## V. Train and Test
 ### 1. Model Configuration
-The information that needs to be configured before model training is stored in [config/train_config.yaml](https://github.com/SYSU-Workflow-Administrator/DeepScaler/blob/main/config/train_config.yaml), and the processed data sets and various model configuration information are stored in [config/train_datasets_speed.yaml](https://github.com/SYSU-Workflow-Administrator/DeepScaler/blob/main/config/train_datasets_speed.yaml). You can modify the tuning parameters yourself.
+The information that needs to be configured before model training is stored in [config/train_config.yaml](https://github.com/SYSU-Workflow-Administrator/DeepScaler/blob/main/config/train_config.yaml), and the processed data sets and various model configuration information are stored in [config/train_dataset_speed.yaml](https://github.com/SYSU-Workflow-Administrator/DeepScaler/blob/main/config/train_dataset_speed.yaml). You can modify the tuning parameters yourself.
 
 ### 2. Collect the original dataset
 ```
