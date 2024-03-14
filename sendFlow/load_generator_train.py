@@ -1082,7 +1082,7 @@ class StagesShape(LoadTestShape):
     def __init__(self):
         super().__init__()
         lines = []
-        with open("/ssj/ssj/train-ticket/train-ticket-auto-query2/sendflow/random-100max.req", 'r') as f:
+        with open("./random-100max.req", 'r') as f:
         #with open("/ssj/ssj/train-ticket/train-ticket-auto-query2/sendflow/normalFlow.req", 'r') as f:
             lines = list(map(int, f.readlines()))
             lines = [x for i,x in enumerate(lines) if i%1==0]#在原来的基础上扩大了4倍
