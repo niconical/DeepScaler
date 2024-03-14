@@ -78,16 +78,16 @@ We use Jaeger to initiate scenario A, which involves establishing an invocation 
 ```
 ### 2. Online-boutique
 ```
-(1) kubectl create -f <(istioctl kube-inject -f /benchmarks/boutique/boutique.yaml)
-(2) kubectl apply  -f /benchmarks/boutique/boutique-gateway.yaml)
+(1) kubectl create -f <(istioctl kube-inject -f ./benchmarks/boutique/boutique.yaml)
+(2) kubectl apply  -f ./benchmarks/boutique/boutique-gateway.yaml
 ```
 ### 3. Train-ticket
 Deploy the Train-Ticket system on K8S with istio.
 ```
-(1) kubectl create -f <(istioctl kube-inject -f /benchmarks/train-ticket/ts-deployment-part1.yml)
-(2) kubectl create -f <(istioctl kube-inject -f /benchmarks/train-ticket/ts-deployment-part2.yml)
-(3) kubectl create -f <(istioctl kube-inject -f /benchmarks/train-ticket/ts-deployment-part3.yml)
-(4) kubectl apply  -f /benchmarks/train-ticket/trainticket-gateway.yaml
+(1) kubectl create -f <(istioctl kube-inject -f ./benchmarks/train-ticket/ts-deployment-part1.yml)
+(2) kubectl create -f <(istioctl kube-inject -f ./benchmarks/train-ticket/ts-deployment-part2.yml)
+(3) kubectl create -f <(istioctl kube-inject -f ./benchmarks/train-ticket/ts-deployment-part3.yml)
+(4) kubectl apply  -f ./benchmarks/train-ticket/trainticket-gateway.yaml
 ```
 
 ## IV. Workload Generation
