@@ -150,7 +150,7 @@ class StagesShape(LoadTestShape):
     def __init__(self):
         super().__init__()
         lines = []
-        with open("/sendflow/random-100max.req", 'r') as f:
+        with open("./random-100max.req", 'r') as f:
         #with open("/home/ssj/boutiquessj/pyboutique/sendflow/normalFlow.req", 'r') as f:
             lines = list(map(int, f.readlines()))
             lines = [x for i,x in enumerate(lines) if i%1==0]
