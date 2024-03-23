@@ -4,27 +4,6 @@ import random
 from random import randint, choice
 import base64
 
-class BookInfoUserTasks(TaskSet):
-    def __init__(self, parent):
-        super().__init__(parent)
-        
-
-    @task(1)
-    def get_productpage(self):
-        self.client.get("/productpage")
-    
-    @task(1)
-    def get_details(self):
-        self.client.get("/details")
-
-    @task(1)
-    def get_reviews(self):
-        self.client.get("/reviews")
-    
-    @task(1)
-    def get_ratings(self):
-        self.client.get("/ratings")
-
 class BoutiqueUserTasks(TaskSet):
 
     def __init__(self, parent):

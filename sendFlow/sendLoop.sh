@@ -5,7 +5,7 @@
 while true
 do
     echo "开始发送流量"
-    nohup locust -f ./load_generator.py --headless > ./logs/sendFlow.log 2>&1 &
+    nohup locust -f ./load_generator_boutique.py --headless > ./logs/sendFlow.log 2>&1 &
     wait
     echo "结束流量"
 done

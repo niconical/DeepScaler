@@ -15,8 +15,8 @@ template = {
     "req": "sum(rate(istio_requests_total{{destination_workload_namespace='{0}',destination_workload='{1}'}}[{2}]))",
     "pod": "count(container_spec_cpu_period{{namespace='{0}',container='{1}'}})"
 }
-prefix_api = "http://localhost:30090/api/v1/query?query="
-namespace = 'boutiquessj'
+prefix_api = "http://localhost:30383/api/v1/query?query="
+namespace = 'app'
 interval = 120
 services = ["adservice", "cartservice", "checkoutservice","currencyservice","emailservice","frontend","paymentservice","productcatalogservice","recommendationservice","shippingservice"]
 
@@ -162,8 +162,8 @@ def load_processed_fetch_data(iternums=[1, 2], root_dir=training_root_dir, metri
 if __name__ == '__main__':
  
     times = [
-        ('2023-03-04 04:09:01', '2023-03-04 05:25:15')
+        ('2024-03-23 00:36:00', '2024-03-23 01:15:00')
 
     ]#
-    save_all_fetch_data(times, 1, root_dir='/ssj/ssj/boutiquessj/pyboutique/newData/slohpa/', interval=30, services=services)#interval 间隔
+    save_all_fetch_data(times, 1, root_dir='./data/boutique/', interval=30, services=services) #interval 间隔
     print("ok")
