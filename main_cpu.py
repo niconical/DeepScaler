@@ -24,12 +24,11 @@ def main(args):
     data_scaler = Scaler(axis=(0, 1, 2))
 
     data_config = model_config['dataset']
-    device = torch.device(data_config['device'])
-    data_names = ('train.npz', 'valid.npz', 'test.npz')
+    data_names = ('train_r4ssj.npz', 'valid_r4ssj.npz', 'test_r2ssj.npz')
     data_loaders = []
     for data_name in data_names:
         dataset = TPDataset(os.path.join(data_config['data_dir'], data_name))
-        if data_name == 'boutique_r1ssj.npz':
+        if data_name == 'train_r4ssj.npz':
             data_scaler.fit(dataset.data['x'])
         dataset.fit(data_scaler)
         data_loader = DataLoader(dataset, batch_size=data_config['batch_size'])
@@ -78,8 +77,8 @@ if __name__ == '__main__':
     parser.add_argument('--train_config_path', type=str, default='config/train_config.yaml',
                         help='Config path of Trainer')
     parser.add_argument('--model_name', type=str, default='AdapGLA', help='Model name to train')
-    parser.add_argument('--num_epoch', type=int, default=1, help='Training times per epoch')
-    parser.add_argument('--num_iter', type=int, default=1, help='Maximum value for iteration')
+    parser.add_argument('--num_epoch', type=int, default=5, help='Training times per epoch')
+    parser.add_argument('--num_iter', type=int, default=20, help='Maximum value for iteration')
     parser.add_argument('--model_save_path', type=str, default='model/AdapGLA_boutique.pkl',
                         help='Model save path')                 
     parser.add_argument('--max_graph_num', type=int, default=1, help='Volume of adjacency matrix set')

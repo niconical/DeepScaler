@@ -10,10 +10,10 @@
 
 dataset:
   data_dir: data/boutique
-  step_num_in: 10
-  step_num_out: 12
+  step_num_in: 480
+  step_num_out: 120
   num_nodes: 10
-  input_size: 3
+  input_size: 5
   batch_size: 64
 
 AdapGLA:

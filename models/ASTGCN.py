@@ -134,7 +134,6 @@ class TemporalAttention(torch.nn.Module):
         E = F.softmax(E, dim=-1)
         return E
 
-
 class ASTGCNBlock(torch.nn.Module):
     """ One ASTGCN block with spatio-temporal attention, graph Convolution with Chebyshev
         polyniminals and temporal convolution.
