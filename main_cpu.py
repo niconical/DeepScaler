@@ -24,7 +24,7 @@ def main(args):
     data_scaler = Scaler(axis=(0, 1, 2))
 
     data_config = model_config['dataset']
-    data_names = ('train_r4ssj.npz', 'valid_r4ssj.npz', 'test_r2ssj.npz')
+    data_names = ('train_r4ssj.npz', 'valid_r4ssj.npz', 'test_r4ssj.npz')
     data_loaders = []
     for data_name in data_names:
         dataset = TPDataset(os.path.join(data_config['data_dir'], data_name))
