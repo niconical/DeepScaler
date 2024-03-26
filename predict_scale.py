@@ -32,12 +32,10 @@ import operator
 import subprocess
 import math
 
-
 def load_config(data_path):
     with open(data_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
     return config
-
 
 def main(args):
     k8s_op = K8sOp()
@@ -60,125 +58,125 @@ def main(args):
         ]
         print(times_original)
 
-        save_all_fetch_data(times_original, 1, root_dir='/dataForPredict/', interval=60, services=services)#interval 间隔
+        save_all_fetch_data(times_original, 1, root_dir='./data/boutique/predict', interval=30, services=services)#interval 间隔
         ### pod
         # "adservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[0],metrics[0])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[0],metrics[0])
         adservice_pod=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             adservice_pod=np.array([adservice_pod])
         adservice_pod = adservice_pod[:,np.newaxis]
         # "cartservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[1],metrics[0])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[1],metrics[0])
         cartservice_pod=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             cartservice_pod=np.array([cartservice_pod])
         cartservice_pod = cartservice_pod[:,np.newaxis]
         # "checkoutservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[2],metrics[0])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[2],metrics[0])
         checkoutservice_pod=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             checkoutservice_pod=np.array([checkoutservice_pod])
         checkoutservice_pod = checkoutservice_pod[:,np.newaxis]
         # "currencyservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[3],metrics[0])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[3],metrics[0])
         currencyservice_pod=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             currencyservice_pod=np.array([currencyservice_pod])
         currencyservice_pod = currencyservice_pod[:,np.newaxis]
         # "emailservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[4],metrics[0])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[4],metrics[0])
         emailservice_pod=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             emailservice_pod=np.array([emailservice_pod])
         emailservice_pod = emailservice_pod[:,np.newaxis]
         # "frontend"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[5],metrics[0])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[5],metrics[0])
         frontend_pod=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             frontend_pod=np.array([frontend_pod])
         frontend_pod = frontend_pod[:,np.newaxis]
         # "paymentservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[6],metrics[0])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[6],metrics[0])
         paymentservice_pod=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             paymentservice_pod=np.array([paymentservice_pod])
         paymentservice_pod = paymentservice_pod[:,np.newaxis]
         # "productcatalogservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[7],metrics[0])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[7],metrics[0])
         productcatalogservice_pod=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             productcatalogservice_pod=np.array([productcatalogservice_pod])
         productcatalogservice_pod = productcatalogservice_pod[:,np.newaxis]
         # "recommendationservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[8],metrics[0])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[8],metrics[0])
         recommendationservice_pod=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             recommendationservice_pod=np.array([recommendationservice_pod])
         recommendationservice_pod = recommendationservice_pod[:,np.newaxis]
         # "shippingservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[9],metrics[0])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[9],metrics[0])
         shippingservice_pod=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             shippingservice_pod=np.array([shippingservice_pod])
         shippingservice_pod = shippingservice_pod[:,np.newaxis]
 
         ####cpu
-        file = '/dataForPredict/1_{}_{}.log'.format(services[0],metrics[1])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[0],metrics[1])
         adservice_cpu=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             adservice_cpu=np.array([adservice_cpu])
         adservice_cpu = adservice_cpu[:,np.newaxis]
         # "cartservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[1],metrics[1])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[1],metrics[1])
         cartservice_cpu=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             cartservice_cpu=np.array([cartservice_cpu])
         cartservice_cpu = cartservice_cpu[:,np.newaxis]
         # "checkoutservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[2],metrics[1])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[2],metrics[1])
         checkoutservice_cpu=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             checkoutservice_cpu=np.array([checkoutservice_cpu])
         checkoutservice_cpu = checkoutservice_cpu[:,np.newaxis]
         # "currencyservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[3],metrics[1])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[3],metrics[1])
         currencyservice_cpu=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             currencyservice_cpu=np.array([currencyservice_cpu])
         currencyservice_cpu = currencyservice_cpu[:,np.newaxis]
         # "emailservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[4],metrics[1])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[4],metrics[1])
         emailservice_cpu=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             emailservice_cpu=np.array([emailservice_cpu])
         emailservice_cpu = emailservice_cpu[:,np.newaxis]
         # "frontend"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[5],metrics[1])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[5],metrics[1])
         frontend_cpu=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             frontend_cpu=np.array([frontend_cpu])
         frontend_cpu = frontend_cpu[:,np.newaxis]
         # "paymentservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[6],metrics[1])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[6],metrics[1])
         paymentservice_cpu=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             paymentservice_cpu=np.array([paymentservice_cpu])
         paymentservice_cpu = paymentservice_cpu[:,np.newaxis]
         # "productcatalogservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[7],metrics[1])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[7],metrics[1])
         productcatalogservice_cpu=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             productcatalogservice_cpu=np.array([productcatalogservice_cpu])
         productcatalogservice_cpu = productcatalogservice_cpu[:,np.newaxis]
         # "recommendationservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[8],metrics[1])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[8],metrics[1])
         recommendationservice_cpu=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             recommendationservice_cpu=np.array([recommendationservice_cpu])
         recommendationservice_cpu = recommendationservice_cpu[:,np.newaxis]
         # "shippingservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[9],metrics[1])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[9],metrics[1])
         shippingservice_cpu=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             shippingservice_cpu=np.array([shippingservice_cpu])
@@ -186,61 +184,61 @@ def main(args):
 
         ### res
         # "adservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[0],metrics[2])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[0],metrics[2])
         adservice_res=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             adservice_res=np.array([adservice_res])
         adservice_res = adservice_res[:,np.newaxis]
         # "cartservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[1],metrics[2])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[1],metrics[2])
         cartservice_res=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             cartservice_res=np.array([cartservice_res])
         cartservice_res = cartservice_res[:,np.newaxis]
         # "checkoutservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[2],metrics[2])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[2],metrics[2])
         checkoutservice_res=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             checkoutservice_res=np.array([checkoutservice_res])
         checkoutservice_res = checkoutservice_res[:,np.newaxis]
         # "currencyservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[3],metrics[2])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[3],metrics[2])
         currencyservice_res=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             currencyservice_res=np.array([currencyservice_res])
         currencyservice_res = currencyservice_res[:,np.newaxis]
         # "emailservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[4],metrics[2])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[4],metrics[2])
         emailservice_res=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             emailservice_res=np.array([emailservice_res])
         emailservice_res = emailservice_res[:,np.newaxis]
         # "frontend"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[5],metrics[2])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[5],metrics[2])
         frontend_res=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             frontend_res=np.array([frontend_res])
         frontend_res = frontend_res[:,np.newaxis]
         # "paymentservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[6],metrics[2])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[6],metrics[2])
         paymentservice_res=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             paymentservice_res=np.array([paymentservice_res])
         paymentservice_res = paymentservice_res[:,np.newaxis]
         # "productcatalogservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[7],metrics[2])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[7],metrics[2])
         productcatalogservice_res=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             productcatalogservice_res=np.array([productcatalogservice_res])
         productcatalogservice_res = productcatalogservice_res[:,np.newaxis]
         # "recommendationservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[8],metrics[2])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[8],metrics[2])
         recommendationservice_res=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             recommendationservice_res=np.array([recommendationservice_res])
         recommendationservice_res = recommendationservice_res[:,np.newaxis]
         # "shippingservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[9],metrics[2])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[9],metrics[2])
         shippingservice_res=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             shippingservice_res=np.array([shippingservice_res])
@@ -248,61 +246,61 @@ def main(args):
 
         ###req
         # "adservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[0],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[0],metrics[3])
         adservice_req=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             adservice_req=np.array([adservice_req])
         adservice_req = adservice_req[:,np.newaxis]
         # "cartservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[1],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[1],metrics[3])
         cartservice_req=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             cartservice_req=np.array([cartservice_req])
         cartservice_req = cartservice_req[:,np.newaxis]
         # "checkoutservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[2],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[2],metrics[3])
         checkoutservice_req=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             checkoutservice_req=np.array([checkoutservice_req])
         checkoutservice_req = checkoutservice_req[:,np.newaxis]
         # "currencyservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[3],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[3],metrics[3])
         currencyservice_req=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             currencyservice_req=np.array([currencyservice_req])
         currencyservice_req = currencyservice_req[:,np.newaxis]
         # "emailservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[4],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[4],metrics[3])
         emailservice_req=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             emailservice_req=np.array([emailservice_req])
         emailservice_req = emailservice_req[:,np.newaxis]
         # "frontend"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[5],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[5],metrics[3])
         frontend_req=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             frontend_req=np.array([frontend_req])
         frontend_req = frontend_req[:,np.newaxis]
         # "paymentservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[6],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[6],metrics[3])
         paymentservice_req=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             paymentservice_req=np.array([paymentservice_req])
         paymentservice_req = paymentservice_req[:,np.newaxis]
         # "productcatalogservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[7],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[7],metrics[3])
         productcatalogservice_req=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             productcatalogservice_req=np.array([productcatalogservice_req])
         productcatalogservice_req = productcatalogservice_req[:,np.newaxis]
         # "recommendationservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[8],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[8],metrics[3])
         recommendationservice_req=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             recommendationservice_req=np.array([recommendationservice_req])
         recommendationservice_req = recommendationservice_req[:,np.newaxis]
         # "shippingservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[9],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[9],metrics[3])
         shippingservice_req=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             shippingservice_req=np.array([shippingservice_req])
@@ -310,66 +308,65 @@ def main(args):
 
         ###mem
         # "adservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[0],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[0],metrics[3])
         adservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             adservice_mem=np.array([adservice_mem])
         adservice_mem = adservice_mem[:,np.newaxis]
         # "cartservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[1],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[1],metrics[3])
         cartservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             cartservice_mem=np.array([cartservice_mem])
         cartservice_mem = cartservice_mem[:,np.newaxis]
         # "checkoutservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[2],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[2],metrics[3])
         checkoutservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             checkoutservice_mem=np.array([checkoutservice_mem])
         checkoutservice_mem = checkoutservice_mem[:,np.newaxis]
         # "currencyservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[3],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[3],metrics[3])
         currencyservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             currencyservice_mem=np.array([currencyservice_mem])
         currencyservice_mem = currencyservice_mem[:,np.newaxis]
         # "emailservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[4],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[4],metrics[3])
         emailservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             emailservice_mem=np.array([emailservice_mem])
         emailservice_mem = emailservice_mem[:,np.newaxis]
         # "frontend"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[5],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[5],metrics[3])
         frontend_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             frontend_mem=np.array([frontend_mem])
         frontend_mem = frontend_mem[:,np.newaxis]
         # "paymentservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[6],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[6],metrics[3])
         paymentservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             paymentservice_mem=np.array([paymentservice_mem])
         paymentservice_mem = paymentservice_mem[:,np.newaxis]
         # "productcatalogservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[7],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[7],metrics[3])
         productcatalogservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             productcatalogservice_mem=np.array([productcatalogservice_mem])
         productcatalogservice_mem = productcatalogservice_mem[:,np.newaxis]
         # "recommendationservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[8],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[8],metrics[3])
         recommendationservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             recommendationservice_mem=np.array([recommendationservice_mem])
         recommendationservice_mem = recommendationservice_mem[:,np.newaxis]
         # "shippingservice"
-        file = '/dataForPredict/1_{}_{}.log'.format(services[9],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[9],metrics[3])
         shippingservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             shippingservice_mem=np.array([shippingservice_mem])
         shippingservice_mem = shippingservice_mem[:,np.newaxis]
-
 
         timeLen = len(adservice_cpu)
         if c_temp==0:
@@ -388,15 +385,14 @@ def main(args):
             listres = torch.tensor(listres, dtype=torch.float32)
             listreq = torch.tensor(listreq, dtype=torch.float32)
             listreq = torch.tensor(listmem, dtype=torch.float32)
-
             
             listt = torch.cat((listpod,listcpu,listres,listreq),dim=1)
             
             yy=torch.unsqueeze(listt,dim=0)
             xx=torch.cat((xx,yy),dim=0)
             
-        np.savez("predict_scale", xx)
-        all_data = predict_read_and_generate_dataset(graph_signal_matrix_filename='predict_scale.npz', num_of_hours=1, num_for_predict=1, points_per_hour=80, save=True)
+        np.savez("./data/boutique/predict/predict_scale", xx)
+        all_data = predict_read_and_generate_dataset(graph_signal_matrix_filename='./data/boutique/predict/predict_scale.npz', num_of_hours=4, num_for_predict=1, points_per_hour=120, save=True)
 
         print('generating data is over and begin predict')
         
@@ -424,7 +420,7 @@ def main(args):
             raise ValueError('Model {} is not right!'.format(net_name))
         net_pred = Model(**net_config).to(device)
         
-        net_pred.load_state_dict(torch.load('xxx.pkl'))###import model
+        net_pred.load_state_dict(torch.load('xxx.pkl')) ###import model
         adj = np.load('best_adj_mx.npy')
         torch_adj = torch.from_numpy(adj)
         
@@ -519,7 +515,7 @@ def main(args):
         for svc in svc_ls:
             if pods_num_to_scale[svc]<=0:
                 pods_num_to_scale[svc]=1
-            k8s_op.scale_deployment_by_replicas(svc, "boutiquessj", pods_num_to_scale[svc])
+            k8s_op.scale_deployment_by_replicas(svc, "app", pods_num_to_scale[svc])
         print("after scale svc:", pods_num_to_scale)
         end = time.time()
         temp = end-start
@@ -530,16 +526,16 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_config_path', type=str, default='/config/train_pems04.yaml',
+    parser.add_argument('--model_config_path', type=str, default='config/train_dataset_speed.yaml',
                         help='Config path of models')
-    parser.add_argument('--train_config_path', type=str, default='/config/train_config.yaml',
+    parser.add_argument('--train_config_path', type=str, default='config/train_config.yaml',
                         help='Config path of Trainer')
     parser.add_argument('--model_name', type=str, default='AdapGLA', help='Model name to train')
     parser.add_argument('--num_epoch', type=int, default=5, help='Training times per epoch')
-    parser.add_argument('--num_iter', type=int, default=5, help='Maximum value for iteration')
-    parser.add_argument('--model_save_path', type=str, default='/model_states/AdapGLA_1.pkl',
-                        help='Model save path')
-    parser.add_argument('--max_graph_num', type=int, default=3, help='Volume of adjacency matrix set')
+    parser.add_argument('--num_iter', type=int, default=20, help='Maximum value for iteration')
+    parser.add_argument('--model_save_path', type=str, default='model/AdapGLA_boutique.pkl',
+                        help='Model save path')                 
+    parser.add_argument('--max_graph_num', type=int, default=1, help='Volume of adjacency matrix set')
     args = parser.parse_args()
 
     main(args)

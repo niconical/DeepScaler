@@ -79,7 +79,7 @@ if __name__ == '__main__':
     parser.add_argument('--model_name', type=str, default='AdapGLA', help='Model name to train')
     parser.add_argument('--num_epoch', type=int, default=5, help='Training times per epoch')
     parser.add_argument('--num_iter', type=int, default=20, help='Maximum value for iteration')
-    parser.add_argument('--model_save_path', type=str, default='model/AdapGLA_boutique.pkl',
+    parser.add_argument('--model_save_path', type=str, default='model_states/AdapGLA_boutique/AdapGLA_boutique.pkl',
                         help='Model save path')                 
     parser.add_argument('--max_graph_num', type=int, default=1, help='Volume of adjacency matrix set')
     args = parser.parse_args()

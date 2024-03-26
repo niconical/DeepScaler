@@ -55,6 +55,6 @@ spec:
         - ReadWriteMany
         resources:
           requests:
-            storage: 5Gi
+            storage: 10Gi
         storageClassName: longhorn 
   version: 2.50.1
