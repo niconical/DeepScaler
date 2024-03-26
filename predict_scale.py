@@ -49,8 +49,9 @@ def main(args):
 
         current_time = datetime.datetime.now()
         current_time_str=current_time.strftime('%Y-%m-%d %H:%M:%S')
+        # 获取时间范围：如果c_temp等于0，那么开始时间就是当前时间减去1小时30分钟。否则，开始时间就是当前时间减去1分钟
         if(c_temp==0):
-            start_time_str = (current_time-datetime.timedelta(hours=1)-datetime.timedelta(minutes=21)).strftime('%Y-%m-%d %H:%M:%S')#
+            start_time_str = (current_time-datetime.timedelta(hours=1)-datetime.timedelta(minutes=30)).strftime('%Y-%m-%d %H:%M:%S')
         else:
             start_time_str = (current_time-datetime.timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M:%S')
         times_original = [
@@ -59,6 +60,7 @@ def main(args):
         print(times_original)
 
         save_all_fetch_data(times_original, 1, root_dir='./data/boutique/predict', interval=30, services=services)#interval 间隔
+
         ### pod
         # "adservice"
         file = './data/boutique/predict/1_{}_{}.log'.format(services[0],metrics[0])
@@ -392,7 +394,7 @@ def main(args):
             xx=torch.cat((xx,yy),dim=0)
             
         np.savez("./data/boutique/predict/predict_scale", xx)
-        all_data = predict_read_and_generate_dataset(graph_signal_matrix_filename='./data/boutique/predict/predict_scale.npz', num_of_hours=4, num_for_predict=1, points_per_hour=120, save=True)
+        all_data = predict_read_and_generate_dataset(graph_signal_matrix_filename='./data/boutique/predict/predict_scale.npz', num_of_hours=1, num_for_predict=1, points_per_hour=120, save=True)
 
         print('generating data is over and begin predict')
         
@@ -404,7 +406,6 @@ def main(args):
         data_scaler = Scaler(axis=(0, 1, 2))
 
         data_config = model_config['dataset']
-        device = torch.device(data_config['device'])
         data_name = 'predict_scale_r1ssj.npz'
 
         dataset = TPDataset2(os.path.join(data_config['data_dir'], data_name))
@@ -418,10 +419,13 @@ def main(args):
         Model = getattr(AdapGL, net_name, None)
         if Model is None:
             raise ValueError('Model {} is not right!'.format(net_name))
-        net_pred = Model(**net_config).to(device)
+        net_pred = Model(**net_config)
         
-        net_pred.load_state_dict(torch.load('xxx.pkl')) ###import model
-        adj = np.load('best_adj_mx.npy')
+        predict_model_path = args.model_save_path
+        predict_model_parent_path = os.path.dirname(predict_model_path)
+        net_pred.load_state_dict(torch.load(predict_model_path)) ###import model
+
+        adj = np.load(predict_model_parent_path+'best_adj_mx.npy')
         torch_adj = torch.from_numpy(adj)
         
         datazz=torch.from_numpy(data_loader.dataset.data['x'])
@@ -533,7 +537,7 @@ if __name__ == '__main__':
     parser.add_argument('--model_name', type=str, default='AdapGLA', help='Model name to train')
     parser.add_argument('--num_epoch', type=int, default=5, help='Training times per epoch')
     parser.add_argument('--num_iter', type=int, default=20, help='Maximum value for iteration')
-    parser.add_argument('--model_save_path', type=str, default='model/AdapGLA_boutique.pkl',
+    parser.add_argument('--model_save_path', type=str, default='model_states/AdapGLA_boutique/AdapGLA_boutique_predict.pkl',
                         help='Model save path')                 
     parser.add_argument('--max_graph_num', type=int, default=1, help='Volume of adjacency matrix set')
     args = parser.parse_args()

@@ -63,7 +63,7 @@ class WebsiteUser(HttpUser):
 
     def on_stop(self):
         return super().on_stop()
-    host = "http://127.0.0.1:32327"
+    host = "http://127.0.0.1:31486"
     wait_time = constant(1)
     # tasks = [BookInfoUserTasks]
     tasks = [BoutiqueUserTasks]

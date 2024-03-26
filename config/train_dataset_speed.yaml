@@ -40,3 +40,6 @@ AdapGLT:
   num_cheb_filter: 128
   init_feature_num: 5
   adj_mx_path: data/boutique/adj_mx_static.npy
+
+# AdapGraphSAGE
+# ATGCN

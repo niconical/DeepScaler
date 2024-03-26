@@ -6,6 +6,7 @@ import datetime
 import time
 import pandas as pd
 import numpy as np
+
 template = {
     "vCPU": "sum(rate(container_cpu_usage_seconds_total{{namespace='{0}',container='{1}'}}[{2}]))",
     "cpu":"sum(irate(container_cpu_usage_seconds_total{{container=~'{1}',namespace=~'{0}'}}[1m]))/sum(container_spec_cpu_quota{{container=~'{1}',namespace=~'{0}'}}/container_spec_cpu_period{{container=~'{1}',namespace=~'{0}'}})",
@@ -15,9 +16,9 @@ template = {
     "req": "sum(rate(istio_requests_total{{destination_workload_namespace='{0}',destination_workload='{1}'}}[{2}]))",
     "pod": "count(container_spec_cpu_period{{namespace='{0}',container='{1}'}})"
 }
-prefix_api = "http://localhost:30383/api/v1/query?query="
+prefix_api = "http://localhost:30329/api/v1/query?query="
 namespace = 'app'
-interval = 120
+interval = 30
 services = ["adservice", "cartservice", "checkoutservice","currencyservice","emailservice","frontend","paymentservice","productcatalogservice","recommendationservice","shippingservice"]
 
 
