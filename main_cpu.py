@@ -9,7 +9,6 @@ from models import AdapGL
 from dataset import TPDataset
 from torch.utils.data import DataLoader
 
-
 def load_config(data_path):
     with open(data_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
@@ -24,11 +23,11 @@ def main(args):
     data_scaler = Scaler(axis=(0, 1, 2))
 
     data_config = model_config['dataset']
-    data_names = ('train_r4ssj.npz', 'valid_r4ssj.npz', 'test_r4ssj.npz')
+    data_names = ('train_r1ssj.npz', 'valid_r1ssj.npz', 'test_r1ssj.npz')
     data_loaders = []
     for data_name in data_names:
-        dataset = TPDataset(os.path.join(data_config['data_dir'], data_name))
-        if data_name == 'train_r4ssj.npz':
+        dataset = TPDataset(os.path.join(data_config['train_data_dir'], data_name))
+        if data_name == 'train_r1ssj.npz':
             data_scaler.fit(dataset.data['x'])
         dataset.fit(data_scaler)
         data_loader = DataLoader(dataset, batch_size=data_config['batch_size'])

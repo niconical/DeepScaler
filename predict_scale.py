@@ -24,7 +24,6 @@ import urllib.parse
 import random
 import json
 import time
-import xlwt
 import requests
 import pandas as pd
 import math
@@ -45,7 +44,7 @@ def main(args):
     while True:
         start = time.time()
         services = ["adservice", "cartservice", "checkoutservice","currencyservice", "emailservice","frontend","paymentservice","productcatalogservice","recommendationservice","shippingservice"]
-        metrics = ['pod','cpu','res','req','mem']
+        metrics = ['pod', 'cpu','res','req','mem']
 
         current_time = datetime.datetime.now()
         current_time_str=current_time.strftime('%Y-%m-%d %H:%M:%S')
@@ -59,7 +58,7 @@ def main(args):
         ]
         print(times_original)
 
-        save_all_fetch_data(times_original, 1, root_dir='./data/boutique/predict', interval=30, services=services)#interval 间隔
+        save_all_fetch_data(times_original, 1, root_dir='./data/boutique/predict/', interval=60, services=services)#interval 间隔
 
         ### pod
         # "adservice"
@@ -310,61 +309,61 @@ def main(args):
 
         ###mem
         # "adservice"
-        file = './data/boutique/predict/1_{}_{}.log'.format(services[0],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[0],metrics[4])
         adservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             adservice_mem=np.array([adservice_mem])
         adservice_mem = adservice_mem[:,np.newaxis]
         # "cartservice"
-        file = './data/boutique/predict/1_{}_{}.log'.format(services[1],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[1],metrics[4])
         cartservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             cartservice_mem=np.array([cartservice_mem])
         cartservice_mem = cartservice_mem[:,np.newaxis]
         # "checkoutservice"
-        file = './data/boutique/predict/1_{}_{}.log'.format(services[2],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[2],metrics[4])
         checkoutservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             checkoutservice_mem=np.array([checkoutservice_mem])
         checkoutservice_mem = checkoutservice_mem[:,np.newaxis]
         # "currencyservice"
-        file = './data/boutique/predict/1_{}_{}.log'.format(services[3],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[3],metrics[4])
         currencyservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             currencyservice_mem=np.array([currencyservice_mem])
         currencyservice_mem = currencyservice_mem[:,np.newaxis]
         # "emailservice"
-        file = './data/boutique/predict/1_{}_{}.log'.format(services[4],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[4],metrics[4])
         emailservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             emailservice_mem=np.array([emailservice_mem])
         emailservice_mem = emailservice_mem[:,np.newaxis]
         # "frontend"
-        file = './data/boutique/predict/1_{}_{}.log'.format(services[5],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[5],metrics[4])
         frontend_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             frontend_mem=np.array([frontend_mem])
         frontend_mem = frontend_mem[:,np.newaxis]
         # "paymentservice"
-        file = './data/boutique/predict/1_{}_{}.log'.format(services[6],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[6],metrics[4])
         paymentservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             paymentservice_mem=np.array([paymentservice_mem])
         paymentservice_mem = paymentservice_mem[:,np.newaxis]
         # "productcatalogservice"
-        file = './data/boutique/predict/1_{}_{}.log'.format(services[7],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[7],metrics[4])
         productcatalogservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             productcatalogservice_mem=np.array([productcatalogservice_mem])
         productcatalogservice_mem = productcatalogservice_mem[:,np.newaxis]
         # "recommendationservice"
-        file = './data/boutique/predict/1_{}_{}.log'.format(services[8],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[8],metrics[4])
         recommendationservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             recommendationservice_mem=np.array([recommendationservice_mem])
         recommendationservice_mem = recommendationservice_mem[:,np.newaxis]
         # "shippingservice"
-        file = './data/boutique/predict/1_{}_{}.log'.format(services[9],metrics[3])
+        file = './data/boutique/predict/1_{}_{}.log'.format(services[9],metrics[4])
         shippingservice_mem=np.genfromtxt(file, dtype=np.double)
         if(c_temp!=0):
             shippingservice_mem=np.array([shippingservice_mem])
@@ -386,15 +385,15 @@ def main(args):
             listcpu = torch.tensor(listcpu, dtype=torch.float32)
             listres = torch.tensor(listres, dtype=torch.float32)
             listreq = torch.tensor(listreq, dtype=torch.float32)
-            listreq = torch.tensor(listmem, dtype=torch.float32)
-            
-            listt = torch.cat((listpod,listcpu,listres,listreq),dim=1)
-            
-            yy=torch.unsqueeze(listt,dim=0)
-            xx=torch.cat((xx,yy),dim=0)
+            listmem = torch.tensor(listmem, dtype=torch.float32)
+
+            listt = torch.cat((listpod, listcpu, listres, listreq, listmem), dim=1)
+    
+            yy = torch.unsqueeze(listt, dim=0)
+            xx = torch.cat((xx, yy), dim=0) 
             
         np.savez("./data/boutique/predict/predict_scale", xx)
-        all_data = predict_read_and_generate_dataset(graph_signal_matrix_filename='./data/boutique/predict/predict_scale.npz', num_of_hours=1, num_for_predict=1, points_per_hour=120, save=True)
+        all_data = predict_read_and_generate_dataset(graph_signal_matrix_filename='./data/boutique/predict/predict_scale.npz', num_of_hours=1, num_for_predict=1, points_per_hour=60, save=True)
 
         print('generating data is over and begin predict')
         
@@ -425,7 +424,7 @@ def main(args):
         predict_model_parent_path = os.path.dirname(predict_model_path)
         net_pred.load_state_dict(torch.load(predict_model_path)) ###import model
 
-        adj = np.load(predict_model_parent_path+'best_adj_mx.npy')
+        adj = np.load(predict_model_parent_path+'/'+'best_adj_mx.npy')
         torch_adj = torch.from_numpy(adj)
         
         datazz=torch.from_numpy(data_loader.dataset.data['x'])
@@ -537,7 +536,7 @@ if __name__ == '__main__':
     parser.add_argument('--model_name', type=str, default='AdapGLA', help='Model name to train')
     parser.add_argument('--num_epoch', type=int, default=5, help='Training times per epoch')
     parser.add_argument('--num_iter', type=int, default=20, help='Maximum value for iteration')
-    parser.add_argument('--model_save_path', type=str, default='model_states/AdapGLA_boutique/AdapGLA_boutique_predict.pkl',
+    parser.add_argument('--model_save_path', type=str, default='model_states/AdapGLA_boutique/AdapGLA_boutique.pkl',
                         help='Model save path')                 
     parser.add_argument('--max_graph_num', type=int, default=1, help='Volume of adjacency matrix set')
     args = parser.parse_args()

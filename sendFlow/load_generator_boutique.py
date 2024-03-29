@@ -63,7 +63,7 @@ class WebsiteUser(HttpUser):
 
     def on_stop(self):
         return super().on_stop()
-    host = "http://127.0.0.1:31486"
+    host = "http://127.0.0.1:31695"
     wait_time = constant(1)
     # tasks = [BookInfoUserTasks]
     tasks = [BoutiqueUserTasks]
@@ -79,7 +79,7 @@ class StagesShape(LoadTestShape):
     
     def tick(self):
         run_time = self.get_run_time()
-        for _ in range(10):#
+        for _ in range(10):
             for i, v in enumerate(self.lines):
                 if run_time < (i+1)*5:
                     tick_data = (v, 100)                

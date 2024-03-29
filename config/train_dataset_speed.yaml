@@ -1,7 +1,8 @@
 dataset:
-  data_dir: data/boutique
-  step_num_in: 480
-  step_num_out: 120
+  data_dir: data/boutique/predict
+  train_data_dir: data/boutique/
+  step_num_in: 60
+  step_num_out: 1
   num_nodes: 10
   input_size: 5
   batch_size: 64

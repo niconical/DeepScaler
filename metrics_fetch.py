@@ -16,13 +16,12 @@ template = {
     "req": "sum(rate(istio_requests_total{{destination_workload_namespace='{0}',destination_workload='{1}'}}[{2}]))",
     "pod": "count(container_spec_cpu_period{{namespace='{0}',container='{1}'}})"
 }
-prefix_api = "http://localhost:30329/api/v1/query?query="
+prefix_api = "http://localhost:32281/api/v1/query?query="
 namespace = 'app'
 interval = 30
 services = ["adservice", "cartservice", "checkoutservice","currencyservice","emailservice","frontend","paymentservice","productcatalogservice","recommendationservice","shippingservice"]
 
-
-metrics = ['cpu','res','req','pod']
+metrics = ['cpu','res','req','pod','mem']
 training_root_dir = ''
 
 def fetch_cpu_usage(svc_name, namespace=namespace, interval=30):
@@ -163,7 +162,7 @@ def load_processed_fetch_data(iternums=[1, 2], root_dir=training_root_dir, metri
 if __name__ == '__main__':
  
     times = [
-        ('2024-03-23 00:36:00', '2024-03-23 01:15:00')
+        ('2024-03-28 16:55:00', '2024-03-28 19:55:00')
 
     ]#
     save_all_fetch_data(times, 1, root_dir='./data/boutique/', interval=30, services=services) #interval 间隔
