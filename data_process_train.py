@@ -10,7 +10,7 @@ services = ["adservice", "cartservice", "checkoutservice","currencyservice", "em
 metrics = ['pod','cpu','res','req','mem']
 
 times_train = [
-    ('2024-03-28 16:54:00', '2024-03-28 19:54:00')
+    ('2024-04-05 17:20:00', '2024-04-05 19:00:00')
 ]#
 
 save_all_fetch_data(times_train, 1, root_dir='./data/boutique/train/', interval=60, services=services,metrics=metrics)#interval 间隔

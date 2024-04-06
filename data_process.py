@@ -10,7 +10,7 @@ services = ["adservice", "cartservice", "checkoutservice","currencyservice", "em
 metrics = ['pod','cpu','res','req','mem']
 
 times_train = [
-    ('2024-03-28 16:54:00', '2024-03-28 19:54:00')
+    ('2024-04-28 16:54:00', '2024-03-28 19:54:00')
 ]#
 
 times_valid = [

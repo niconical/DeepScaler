@@ -16,7 +16,7 @@ template = {
     "req": "sum(rate(istio_requests_total{{destination_workload_namespace='{0}',destination_workload='{1}'}}[{2}]))",
     "pod": "count(container_spec_cpu_period{{namespace='{0}',container='{1}'}})"
 }
-prefix_api = "http://localhost:32281/api/v1/query?query="
+prefix_api = "http://localhost:31719/api/v1/query?query="
 namespace = 'app'
 interval = 30
 services = ["adservice", "cartservice", "checkoutservice","currencyservice","emailservice","frontend","paymentservice","productcatalogservice","recommendationservice","shippingservice"]

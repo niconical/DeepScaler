@@ -1,6 +1,6 @@
 svc_ls = ["frontend","adservice", "cartservice", "checkoutservice","currencyservice", "emailservice","paymentservice","productcatalogservice","recommendationservice","shippingservice"]
 
-metrics = ['res', 'req', 'pod', 'cpu']
+metrics = ['res', 'req', 'pod', 'cpu','mem']
 
 sla_up = 0.2
 sla_down = 0.1
@@ -9,6 +9,8 @@ sla_down_count = 0
 counter = 0
 cpu_usage_count = 0
 cpu_usage_sum = 0
+mem_usage_sum = 0
+mem_usage_count = 0
 filter_set = {}
 pod_map = {}
 pod_map_all = {}
@@ -22,7 +24,7 @@ for svc in svc_ls:
 iternum = 1
 for svc in svc_ls:
   for m in metrics:
-    t_file = '/ssj/ssj/boutiquessj/pyboutique/newData/3.2.2aws/{}_{}_{}.log'.format(iternum, svc, m)
+    t_file = '/root/DeepScaler/data/boutique/train/{}_{}_{}.log'.format(iternum, svc, m)
     if m == 'res' and svc == 'frontend':
       data = open(t_file).readlines()
       idx = 0
@@ -66,6 +68,19 @@ for svc in svc_ls:
         if cpu < 100 and cpu >0 :
           cpu_usage_sum += cpu
           cpu_usage_count += 1
+    if m == 'mem':
+      data = open(t_file).readlines()
+      idx = 0
+      mem_usage_sum = 0
+      mem_usage_count = 0
+      for line in data:
+        idx += 1
+        if idx in filter_set:
+            continue
+        mem = float(line.strip())
+        if mem < 100 and mem > 0:
+            mem_usage_sum += mem
+            mem_usage_count += 1
     if m == 'pod':
       data = open(t_file).readlines()
       idx = 0
@@ -77,6 +92,13 @@ for svc in svc_ls:
         pod_map[svc] += podn
       pod_map_all[svc] = pod_map[svc]
       pod_map[svc] /= counter
+
+# After the loop ends, calculate the average CPU usage
+cpu_usage_average = cpu_usage_sum / cpu_usage_count
+print("Average CPU usage: %.2f%%" % (cpu_usage_average))
+
+mem_usage_average = mem_usage_sum / mem_usage_count
+print("Average Memory usage: %.2f%%" % (mem_usage_average))
 
 cost = 0
 cpu_core = {"adservice":0.3, "cartservice":0.3, "checkoutservice":0.2,"currencyservice":0.2, "emailservice":0.2,"frontend":0.2,"paymentservice":0.2,"productcatalogservice":0.2,"recommendationservice":0.2,"shippingservice":0.2}
