@@ -81,6 +81,6 @@ class StagesShape(LoadTestShape):
         run_time = self.get_run_time()
         for _ in range(10):
             for i, v in enumerate(self.lines):
-                if run_time < (i+1)*5:
+                if run_time < (i+1)*20:
                     tick_data = (v, 100)                
                     return tick_data
