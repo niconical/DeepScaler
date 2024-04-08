@@ -10,11 +10,10 @@ services = ["adservice", "cartservice", "checkoutservice","currencyservice", "em
 metrics = ['req','cpu','res','pod','mem']
 
 times_test = [
-    ('2024-04-08 02:00:00', '2024-04-08 09:30:00')
+        ('2024-04-06 11:30:00', '2024-04-08 12:30:00')
 ]#
 
 save_all_fetch_data(times_test, 1, root_dir='./data/boutique/test/', interval=30, services=services,metrics=metrics)#interval 间隔
-
 
 ###req
 # "adservice"
@@ -256,7 +255,7 @@ np.savez("./data/boutique/test", xx)  # 生成原始的序列数据
 
 ## for train 
 all_data = read_and_generate_dataset(graph_signal_matrix_filename='./data/boutique/test.npz', 
-                                        num_of_hours=6, 
-                                        num_for_predict=120, 
+                                        num_of_hours=24, 
+                                        num_for_predict=120*24, 
                                         points_per_hour=120, 
                                         save=True)

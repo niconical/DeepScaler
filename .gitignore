@@ -1,0 +1,4 @@
+data/boutique/*
+data/boutique/*/*
+
+__pycache__/*
