@@ -160,6 +160,8 @@ class AdapGLTrainer(Trainer):
         print('Test results of current graph: ')
         _, y_true, y_pred = self.model_pred_trainer.evaluate(data_loader, metrics, adj_mx=best_adj_mx)
         self.model_pred_trainer.print_test_result(y_pred, y_true, metrics)
+        return y_pred, y_true
+
 
     def train(self, train_data_loader, eval_data_loader, metrics=('mae', 'rmse', 'mape')):
         print('Start Training...')

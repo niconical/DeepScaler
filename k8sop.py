@@ -10,7 +10,7 @@ class K8sOp:
         # self.config = config
         # if config["is_remote"]:
         # vpc and outer net -> use .kube/config
-        k8s.config.load_kube_config(config_file="/root/.kube/config")
+        k8s.config.load_kube_config(config_file="/etc/kubernetes/admin.conf")
         # else:
         #     # pod version -> not use .kube/config
         #     k8s.config.load_incluster_config()

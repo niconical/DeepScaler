@@ -48,7 +48,7 @@ This repository contains a prototyped version of DeepScaler described in our ASE
 +   pandas == 1.4.4
 +   torch == 1.13.1
 
- ```pip3 install -r requirements.txt```
+ ```pip3 install -r requirement.txt```
 ### 2. Setup Docker
 Docker 20.10.12
 
@@ -78,16 +78,16 @@ We use Jaeger to initiate scenario A, which involves establishing an invocation 
 ```
 ### 2. Online-boutique
 ```
-(1) kubectl create -f <(istioctl kube-inject -f /benchmarks/boutique/boutique.yaml)
-(2) kubectl apply  -f /benchmarks/boutique/boutique-gateway.yaml)
+(1) kubectl create -f <(istioctl kube-inject -f ./benchmarks/boutique/boutique.yaml)
+(2) kubectl apply  -f ./benchmarks/boutique/boutique-gateway.yaml
 ```
 ### 3. Train-ticket
 Deploy the Train-Ticket system on K8S with istio.
 ```
-(1) kubectl create -f <(istioctl kube-inject -f /benchmarks/train-ticket/ts-deployment-part1.yml)
-(2) kubectl create -f <(istioctl kube-inject -f /benchmarks/train-ticket/ts-deployment-part2.yml)
-(3) kubectl create -f <(istioctl kube-inject -f /benchmarks/train-ticket/ts-deployment-part3.yml)
-(4) kubectl apply  -f /benchmarks/train-ticket/trainticket-gateway.yaml
+(1) kubectl create -f <(istioctl kube-inject -f ./benchmarks/train-ticket/ts-deployment-part1.yml)
+(2) kubectl create -f <(istioctl kube-inject -f ./benchmarks/train-ticket/ts-deployment-part2.yml)
+(3) kubectl create -f <(istioctl kube-inject -f ./benchmarks/train-ticket/ts-deployment-part3.yml)
+(4) kubectl apply  -f ./benchmarks/train-ticket/trainticket-gateway.yaml
 ```
 
 ## IV. Workload Generation
@@ -105,7 +105,7 @@ You can refer to this [webpage](https://blog.techbridge.cc/2019/05/29/how-to-use
 
 ## V. Train and Test
 ### 1. Model Configuration
-The information that needs to be configured before model training is stored in [config/train_config.yaml](https://github.com/SYSU-Workflow-Administrator/DeepScaler/blob/main/config/train_config.yaml), and the processed data sets and various model configuration information are stored in [config/train_datasets_speed.yaml](https://github.com/SYSU-Workflow-Administrator/DeepScaler/blob/main/config/train_datasets_speed.yaml). You can modify the tuning parameters yourself.
+The information that needs to be configured before model training is stored in [config/train_config.yaml](https://github.com/SYSU-Workflow-Administrator/DeepScaler/blob/main/config/train_config.yaml), and the processed data sets and various model configuration information are stored in [config/train_dataset_speed.yaml](https://github.com/SYSU-Workflow-Administrator/DeepScaler/blob/main/config/train_dataset_speed.yaml). You can modify the tuning parameters yourself.
 
 ### 2. Collect the original dataset
 ```
