@@ -7,99 +7,96 @@ from prepareData import read_and_generate_dataset
 # 收集数据
 
 services = ["adservice", "cartservice", "checkoutservice","currencyservice", "emailservice","frontend","paymentservice","productcatalogservice","recommendationservice","shippingservice"]
-metrics = ['req','cpu','res','pod','mem']
+metrics = ['cpu','req','res','pod','mem']
 
-times_valid = [
+times_test = [
         ('2024-04-06 11:30:00', '2024-04-08 12:30:00')
 ]#
 
-save_all_fetch_data(times_valid, 1, root_dir='./data/boutique/valid/', interval=30, services=services,metrics=metrics)#interval 间隔
+save_all_fetch_data(times_test, 1, root_dir='./data/boutique/valid/', interval=30, services=services,metrics=metrics)#interval 间隔
 
-
-###req
-# "adservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[0],metrics[0])
-adservice_req=np.genfromtxt(file, dtype=np.double)
-adservice_req = adservice_req[:,np.newaxis]
-# "cartservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[1],metrics[0])
-cartservice_req=np.genfromtxt(file, dtype=np.double)
-cartservice_req = cartservice_req[:,np.newaxis]
-# "checkoutservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[2],metrics[0])
-checkoutservice_req=np.genfromtxt(file, dtype=np.double)
-checkoutservice_req = checkoutservice_req[:,np.newaxis]
-# "currencyservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[3],metrics[0])
-currencyservice_req=np.genfromtxt(file, dtype=np.double)
-currencyservice_req = currencyservice_req[:,np.newaxis]
-# "emailservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[4],metrics[0])
-emailservice_req=np.genfromtxt(file, dtype=np.double)
-emailservice_req = emailservice_req[:,np.newaxis]
-# "frontend"
-file = './data/boutique/train/1_{}_{}.log'.format(services[5],metrics[0])
-frontend_req=np.genfromtxt(file, dtype=np.double)
-frontend_req = frontend_req[:,np.newaxis]
-# "paymentservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[6],metrics[0])
-paymentservice_req=np.genfromtxt(file, dtype=np.double)
-paymentservice_req = paymentservice_req[:,np.newaxis]
-# "productcatalogservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[7],metrics[0])
-productcatalogservice_req=np.genfromtxt(file, dtype=np.double)
-productcatalogservice_req = productcatalogservice_req[:,np.newaxis]
-# "recommendationservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[8],metrics[0])
-recommendationservice_req=np.genfromtxt(file, dtype=np.double)
-recommendationservice_req = recommendationservice_req[:,np.newaxis]
-# "shippingservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[9],metrics[0])
-shippingservice_req=np.genfromtxt(file, dtype=np.double)
-shippingservice_req = shippingservice_req[:,np.newaxis]
-
-#####################################################################################################
 ####cpu
-file = './data/boutique/train/1_{}_{}.log'.format(services[0],metrics[1])
+file = './data/boutique/train/1_{}_{}.log'.format(services[0],metrics[0])
 adservice_cpu=np.genfromtxt(file, dtype=np.double)
 adservice_cpu = adservice_cpu[:,np.newaxis]
 # "cartservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[1],metrics[1])
+file = './data/boutique/train/1_{}_{}.log'.format(services[1],metrics[0])
 cartservice_cpu=np.genfromtxt(file, dtype=np.double)
 cartservice_cpu = cartservice_cpu[:,np.newaxis]
 # "checkoutservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[2],metrics[1])
+file = './data/boutique/train/1_{}_{}.log'.format(services[2],metrics[0])
 checkoutservice_cpu=np.genfromtxt(file, dtype=np.double)
 checkoutservice_cpu = checkoutservice_cpu[:,np.newaxis]
 # "currencyservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[3],metrics[1])
+file = './data/boutique/train/1_{}_{}.log'.format(services[3],metrics[0])
 currencyservice_cpu=np.genfromtxt(file, dtype=np.double)
 currencyservice_cpu = currencyservice_cpu[:,np.newaxis]
 # "emailservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[4],metrics[1])
+file = './data/boutique/train/1_{}_{}.log'.format(services[4],metrics[0])
 emailservice_cpu=np.genfromtxt(file, dtype=np.double)
 emailservice_cpu = emailservice_cpu[:,np.newaxis]
 # "frontend"
-file = './data/boutique/train/1_{}_{}.log'.format(services[5],metrics[1])
+file = './data/boutique/train/1_{}_{}.log'.format(services[5],metrics[0])
 frontend_cpu=np.genfromtxt(file, dtype=np.double)
 frontend_cpu = frontend_cpu[:,np.newaxis]
 # "paymentservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[6],metrics[1])
+file = './data/boutique/train/1_{}_{}.log'.format(services[6],metrics[0])
 paymentservice_cpu=np.genfromtxt(file, dtype=np.double)
 paymentservice_cpu = paymentservice_cpu[:,np.newaxis]
 # "productcatalogservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[7],metrics[1])
+file = './data/boutique/train/1_{}_{}.log'.format(services[7],metrics[0])
 productcatalogservice_cpu=np.genfromtxt(file, dtype=np.double)
 productcatalogservice_cpu = productcatalogservice_cpu[:,np.newaxis]
 # "recommendationservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[8],metrics[1])
+file = './data/boutique/train/1_{}_{}.log'.format(services[8],metrics[0])
 recommendationservice_cpu=np.genfromtxt(file, dtype=np.double)
 recommendationservice_cpu = recommendationservice_cpu[:,np.newaxis]
 # "shippingservice"
-file = './data/boutique/train/1_{}_{}.log'.format(services[9],metrics[1])
+file = './data/boutique/train/1_{}_{}.log'.format(services[9],metrics[0])
 shippingservice_cpu=np.genfromtxt(file, dtype=np.double)
 shippingservice_cpu = shippingservice_cpu[:,np.newaxis]
 
+###req
+# "adservice"
+file = './data/boutique/train/1_{}_{}.log'.format(services[0],metrics[1])
+adservice_req=np.genfromtxt(file, dtype=np.double)
+adservice_req = adservice_req[:,np.newaxis]
+# "cartservice"
+file = './data/boutique/train/1_{}_{}.log'.format(services[1],metrics[1])
+cartservice_req=np.genfromtxt(file, dtype=np.double)
+cartservice_req = cartservice_req[:,np.newaxis]
+# "checkoutservice"
+file = './data/boutique/train/1_{}_{}.log'.format(services[2],metrics[1])
+checkoutservice_req=np.genfromtxt(file, dtype=np.double)
+checkoutservice_req = checkoutservice_req[:,np.newaxis]
+# "currencyservice"
+file = './data/boutique/train/1_{}_{}.log'.format(services[3],metrics[1])
+currencyservice_req=np.genfromtxt(file, dtype=np.double)
+currencyservice_req = currencyservice_req[:,np.newaxis]
+# "emailservice"
+file = './data/boutique/train/1_{}_{}.log'.format(services[4],metrics[1])
+emailservice_req=np.genfromtxt(file, dtype=np.double)
+emailservice_req = emailservice_req[:,np.newaxis]
+# "frontend"
+file = './data/boutique/train/1_{}_{}.log'.format(services[5],metrics[1])
+frontend_req=np.genfromtxt(file, dtype=np.double)
+frontend_req = frontend_req[:,np.newaxis]
+# "paymentservice"
+file = './data/boutique/train/1_{}_{}.log'.format(services[6],metrics[1])
+paymentservice_req=np.genfromtxt(file, dtype=np.double)
+paymentservice_req = paymentservice_req[:,np.newaxis]
+# "productcatalogservice"
+file = './data/boutique/train/1_{}_{}.log'.format(services[7],metrics[1])
+productcatalogservice_req=np.genfromtxt(file, dtype=np.double)
+productcatalogservice_req = productcatalogservice_req[:,np.newaxis]
+# "recommendationservice"
+file = './data/boutique/train/1_{}_{}.log'.format(services[8],metrics[1])
+recommendationservice_req=np.genfromtxt(file, dtype=np.double)
+recommendationservice_req = recommendationservice_req[:,np.newaxis]
+# "shippingservice"
+file = './data/boutique/train/1_{}_{}.log'.format(services[9],metrics[1])
+shippingservice_req=np.genfromtxt(file, dtype=np.double)
+shippingservice_req = shippingservice_req[:,np.newaxis]
 ###############################################################################################
 ### res
 # "adservice"
@@ -233,19 +230,19 @@ shippingservice_mem = shippingservice_mem[:,np.newaxis]
 timeLen = len(adservice_cpu)
 xx = torch.tensor([])
 for i in range(timeLen):
-    listreq = np.vstack((adservice_req[i], cartservice_req[i], checkoutservice_req[i], currencyservice_req[i], emailservice_req[i], frontend_req[i], paymentservice_req[i], productcatalogservice_req[i], recommendationservice_req[i], shippingservice_req[i]))
     listcpu = np.vstack((adservice_cpu[i], cartservice_cpu[i], checkoutservice_cpu[i], currencyservice_cpu[i], emailservice_cpu[i], frontend_cpu[i], paymentservice_cpu[i], productcatalogservice_cpu[i], recommendationservice_cpu[i], shippingservice_cpu[i]))
+    listreq = np.vstack((adservice_req[i], cartservice_req[i], checkoutservice_req[i], currencyservice_req[i], emailservice_req[i], frontend_req[i], paymentservice_req[i], productcatalogservice_req[i], recommendationservice_req[i], shippingservice_req[i]))
     listres = np.vstack((adservice_res[i], cartservice_res[i], checkoutservice_res[i], currencyservice_res[i], emailservice_res[i], frontend_res[i], paymentservice_res[i], productcatalogservice_res[i], recommendationservice_res[i], shippingservice_res[i]))
     listpod = np.vstack((adservice_pod[i], cartservice_pod[i], checkoutservice_pod[i], currencyservice_pod[i], emailservice_pod[i], frontend_pod[i], paymentservice_pod[i], productcatalogservice_pod[i], recommendationservice_pod[i], shippingservice_pod[i]))
     listmem = np.vstack((adservice_mem[i], cartservice_mem[i], checkoutservice_mem[i], currencyservice_mem[i], emailservice_mem[i], frontend_mem[i], paymentservice_mem[i], productcatalogservice_mem[i], recommendationservice_mem[i], shippingservice_mem[i]))
 
-    listreq = torch.tensor(listreq, dtype=torch.float32).clone().detach()
     listcpu = torch.tensor(listcpu, dtype=torch.float32).clone().detach()
+    listreq = torch.tensor(listreq, dtype=torch.float32).clone().detach()
     listres = torch.tensor(listres, dtype=torch.float32).clone().detach()
     listpod = torch.tensor(listpod, dtype=torch.float32).clone().detach()
     listmem = torch.tensor(listmem, dtype=torch.float32).clone().detach()
     
-    listt = torch.cat((listreq, listcpu, listres, listpod, listmem), dim=1)
+    listt = torch.cat((listcpu, listreq, listres, listpod, listmem), dim=1)
     
     yy = torch.unsqueeze(listt, dim=0)
     xx = torch.cat((xx, yy), dim=0)
@@ -260,3 +257,4 @@ all_data = read_and_generate_dataset(graph_signal_matrix_filename='./data/boutiq
                                         num_for_predict=120*24, 
                                         points_per_hour=120, 
                                         save=True)
+
